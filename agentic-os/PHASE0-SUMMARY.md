@@ -99,7 +99,10 @@ windows (10/11, PowerShell) — use the Windows blocks in every phase.
 ## Notes carried from the interview
 - Costs metric was considered and dropped (Juliette freelancer-invoice
   distortion makes combined costs misleading for now).
-- Wise data hygiene: "AZURIUS DIGITAL S.L" and "AZURIUS SL." are the same
-  customer — normalize if a customer-count metric is ever added.
+- Wise data hygiene: "AZURIUS DIGITAL S.L" and "AZURIUS SL." are distinct
+  legal entities (not simple name duplicates), but same owners — AZURIUS SL.
+  closed and the owners continued as AZURIUS DIGITAL S.L. Treat as one
+  underlying customer relationship (successor mapping) if a customer-count
+  metric is ever added — not a plain name-dedup and not two separate customers.
 - Wise revenue is 100% services/concierge today; the Stripe card, once live,
   makes the concierge-vs-software split visible daily.

@@ -1,0 +1,18 @@
+/* Swap-point 4 — styles.css :root block (Berry Nova dark palette).
+   Replace the template's terracotta values with these. */
+
+:root {
+  --bg: #0d0b10;            /* near-black, violet cast */
+  --bg-raised: #16121c;     /* cards / panels */
+  --bg-hover: #1e1826;
+  --text: #e8e4ec;
+  --text-dim: #9a8fa8;
+  --accent: #d34a8a;        /* berry magenta — primary */
+  --accent-soft: #d34a8a33; /* 20% wash for fills/tints */
+  --accent-2: #8b5cf6;      /* violet — secondary/series-2 */
+  --ok: #4ade80;
+  --warn: #fbbf24;
+  --err: #f87171;
+  --border: #2a2233;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}

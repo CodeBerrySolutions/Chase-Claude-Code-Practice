@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.pyc
+
+# Secrets & credentials — never commit
+.env
+*.env
+
+# Wise / financial data exports — keep raw statements out of git
+transactionhistory*.csv
+**/inbox/wise/*.csv

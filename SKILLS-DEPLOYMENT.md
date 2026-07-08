@@ -32,9 +32,60 @@ Re-run the script any time a NEW skill is added to the repo (existing links
 are skipped; new folders get linked). It also gitignores the junctioned
 paths inside the vault so the vault's git doesn't double-track them.
 
+## Deploy convention: `main` is production
+
+Cloud sessions build on feature branches; **merging to `main` is the release
+act**. The local checkout stays on `main` permanently, and `git pull` on
+`main` = deploy. Never point the vault junctions at a feature-branch
+checkout for daily operation.
+
+### Freshness signal (fixes pull-drift)
+
+The junction guarantees local coherence, not freshness — skill fixes pushed
+from cloud sessions sit on GitHub until pulled. Run this at runner startup
+(or scheduled daily) to surface staleness instead of silently running old
+logic:
+
+```powershell
+# Warn-IfSkillsStale.ps1 — run from the repo root
+git fetch origin main --quiet
+$behind = git rev-list --count HEAD..origin/main
+if ([int]$behind -gt 0) {
+  Write-Warning "SKILLS ARE $behind COMMIT(S) BEHIND ORIGIN - run 'git pull' to deploy."
+}
+```
+
+(Deliberately warn-only: auto-pull can collide with a dirty working tree
+and turn an invisible problem into a broken pipeline.)
+
+### Auto-relink on pull (fixes forgotten new skills)
+
+New skills need a new junction; make `git pull` handle it. Create
+`.git\hooks\post-merge` (no extension) in the local clone containing:
+
+```sh
+#!/bin/sh
+powershell -ExecutionPolicy Bypass -File "$(git rev-parse --show-toplevel)/scripts/Link-SkillsToVault.ps1"
+```
+
+The link script is idempotent — existing junctions are skipped.
+
+## Standing rules (one line each, put in the LOCAL machine's context)
+
+- Repo skills are edited **only via repo commits** — never casually amended
+  through the vault path (same file! uncommitted edits cause pull conflicts).
+- Vault agents must **never modify or delete** anything under
+  `vault\.claude\skills\` — deleting through a junction deletes the repo
+  source.
+- Check once whether `Documents` is **OneDrive-managed**; OneDrive interacts
+  badly with junctions (duplication/choking). If yes, exclude or relocate
+  the vault.
+- Add `.claude/skills` to Obsidian's **Excluded files** so skill instructions
+  don't pollute vault search/graph.
+
 ## Day-to-day
 
-- **Deploy a fix:** `git pull` in this repo. Done.
+- **Deploy a fix:** `git pull` in this repo (on `main`). Done.
 - **Build a new skill:** create it here, commit, pull locally, re-run the
   link script once.
 - **Take a skill out of the runtime:** re-run with

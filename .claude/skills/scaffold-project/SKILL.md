@@ -44,8 +44,13 @@ Parse the ramble for:
 
 Ask at most one or two questions, then get on with it. Candidates, in priority order:
 
-1. The goal/end-state, if genuinely unclear.
-2. When there is a deadline, the **dependency questions**:
+1. **The due date, if no date is stated or inferable.** This one is NON-OPTIONAL:
+   Phil's default view shows tasks planned for upcoming days, so an undated task
+   is effectively invisible and may never be seen again. Never create a task
+   without a Due date silently — ask ("when should this land — today?"), or
+   propose a date and flag it clearly as proposed.
+2. The goal/end-state, if genuinely unclear.
+3. When there is a deadline, the **dependency questions**:
    - Who consumes the deliverable on that date? (e.g. "Is Friday when you present
      to Juliette, or when it ships?")
    - Is Phil the sole judge of done, or does someone review it first?

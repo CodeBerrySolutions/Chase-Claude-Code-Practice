@@ -79,3 +79,10 @@ counterparties to have no Xero contact yet.
 Output review CSVs only; a **human** imports or enters them into Xero.
 Never claim anything was written to Xero — the connector is read-only by
 design.
+
+## Personal / out of scope (ruling 2026-07-08)
+
+- **Nannies** are paid through Phil's PERSONAL Wise account and are NOT a
+  business expense. They should never appear in business bank data; if a
+  nanny payment shows up in the business Wise/Mercury accounts, flag it as
+  personal/misrouted — never code it to a business expense account.

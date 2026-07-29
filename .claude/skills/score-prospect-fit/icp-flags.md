@@ -1,72 +1,67 @@
-# ICP Flags (A_qualified only)
+# ICP — who BerryNova can actually serve
 
-Only profiles that reached **A_qualified** get an ICP flag. It expresses *how*
-central the niche is to our offer — all three are worth outreach, but P1 is the
-bullseye. B / C / D profiles leave `icp_flag` blank.
+**The one test:** does this person sell **interactive, done-with-you coaching or
+teaching of knowledge/transformation** — 1:1 coaching, group coaching, a
+mastermind, a cohort program — that BerryNova could help *deliver or scale*?
 
-Decide the flag from the **bio + full_name + category + their comment**, not
-from follower count.
+The person is the expert; the value is **information/transformation delivered
+through interaction**. If the value is instead a *performed craft*, a *procedure*,
+a *done-for-you service*, or a *passive product with no interaction*, they are
+**out of ICP** — there is nothing to offload.
 
-**The offer gate wins over the niche read.** ICP is about *what niche* they're
-in; the offer gate (`tier-rubric.md`, Gate 2) is about *whether they sell a
-serviceable offer*. A profile that reads like a textbook P1 coach but is
-confirmed **product-only** (merch / self-guided course only) is a **D_fail
-(`no_serviceable_offer`)**, and never gets an ICP flag at all. Only assign
-P1/P2/P3 to profiles that already cleared the offer gate.
+This replaces the v2 "adjacent service pro = P2 fit" rule, which was wrong:
+adjacent service pros are a fit **only** when what they actually sell is coaching
+their peers, not their craft (see `@elenasblair` vs `@vickibartel` below).
 
-## P1_coach_expert — the bullseye
+## In-ICP — assign an ICP flag
 
-Sells knowledge, coaching, or transformation as the core business. They coach,
-mentor, teach, consult, or position as an expert/authority. Any vertical:
-business/marketing, mindset/spiritual, health/nutrition, creative-skill
-coaching, professional/leadership.
+Only A_qualified profiles that cleared the offer gate get a flag.
 
-Tells: "I help [audience] [outcome]", "coach / mentor / strategist", a course /
-program / mastermind / membership, a podcast about their expertise, a lead
-magnet or booking link tied to teaching.
+### P1_coach_expert — the bullseye
+Sells interactive coaching/teaching as the core business: 1:1, group program,
+mastermind, cohort. Business, mindset, marketing, spiritual, health-*coaching*,
+professional/leadership.
+- `@nancy_levin` — 9-week group coaching program, coach for coaches. **High.**
+- `@kellylynnadams` — 1:1 program. **High.**
+- `@theblondecherie` — 1:1 coaching. **High.**
+- `@estheriturralde` — life coach, huge engagement (Spanish-speaking). **High.**
 
-Pilot examples: `tiana_smith_coaching` (7-figure systems coach),
-`estheriturralde` (life coach), `nancy_levin` (master coach for coaches),
-`huihuilek` (high-ticket mentor for coaches), `sallyhogshead` (expert author /
-speaker), `drreginakoepp` (psychologist training therapists via CEU courses).
+### P2_practitioner_who_coaches — craft-rooted but sells coaching
+Came from a craft/vertical, but the **offer sold is coaching/teaching their
+peers**, not the craft itself.
+- `@elenasblair` — a photographer, but the business is a mastermind coaching
+  *other photographers*. Sells coaching → **fit, High.**
+Contrast with the excluded photographers below — the difference is the *offer*,
+not the niche.
 
-Note: `elenasblair_photography` is **P1**, not P2 — she photographs, but her
-*business* is coaching photographers. Flag by what they sell, not their craft.
+## OUT of ICP — these are Cut / D_fail, never an ICP flag
 
-## P2_adjacent — adjacent service pro
+Your labels define four hard exclusions. Positive evidence of any of these →
+reject even if the bio reads "coach/expert."
 
-A done-for-you service provider serving founders/creators/women-in-business,
-with an education, coaching, or authority lean — but their core offer is a
-service, not knowledge. Brand photographers, designers, web/brand studios,
-med-spa injectors, stylists, image consultants.
+1. **Performed craft / done-for-you service** — sells *doing the thing for
+   clients*, not teaching it.
+   - `@vickibartel.photographer` — sells photography services. Cut.
+   - `@honeywavecreative` — designer; her only teaching is a $97 course with **no
+     sign of interaction** with students → passive product, not coaching. Cut.
+2. **Physical / procedural / hands-on / visual skill** — value is in the body,
+   the procedure, or a visual demonstration; can't be delivered as info-coaching.
+   - `@theenglishaesthetic` — injectables; a **medical procedure**. Expert at
+     *performing*, not at *teaching*. Cut.
+   - `@patriciamedrospilates` — pilates = physical training. Cut.
+   - `@ashleeyoungmusicstudio` — teaches reading music, a **visual** skill. Cut.
+3. **Passive product, no interactivity** — self-guided course / ebook with no
+   delivery relationship. Nothing to offload. (See `@honeywavecreative`.)
+4. **Community / movement / not an individual expert.**
+   - `@buywomenbuilt` — a community, not an expert. Cut.
+5. **Ecommerce / physical product** — as before.
 
-Tells: delivers a service ("brand photographer", "website design", "injectables")
-to a business-owner audience; often also teaches/speaks, but service is primary.
-
-Pilot examples: `honeywavecreative` (brand/web designer),
-`vickibartel.photographer` (brand photographer for founders),
-`theenglishaesthetic` (med-spa injector, also trains),
-`ashleeyoungmusicstudio` (piano teacher), `jenniwedmore` (meditation
-membership — adjacent to the business-coach core), `hctswellness` (teen health
-educator / practitioner).
-
-## P3_nonfit — in-band but off-niche
-
-Cleared every mechanical gate (public, active, right size, has an offer) but
-the niche isn't who we sell to. Keep the A tier (the pilot did) but flag P3 so
-the list can be filtered.
-
-Typical: realtors, physical-product / brand founders, community/movement
-accounts, generic digital creators, local trades.
-
-Pilot examples: `thecarriehimel` (Dallas realtor), `grow.with.roshnii`
-(jewelry-brand founder), `buywomenbuilt` (brand-directory movement),
-`cosmogeeks` (cosmetology services), `1905farmhouse` (DIY / Etsy shop).
+`P3_nonfit` still exists for the in-band-but-off-vertical case (realtor, generic
+creator) that isn't one of the hard exclusions above — keep as A, low priority.
 
 ## Tie-breakers
-
-- Sells knowledge as the main thing → **P1**, even if they also run a service.
-- Sells a service to a business-owner audience → **P2**.
-- Sells a physical product, real estate, or nothing niche-relevant → **P3**.
-- When torn between P1 and P2, ask "if they only kept one revenue line, is it
-  teaching or doing?" Teaching → P1, doing → P2.
+- Sells **coaching their peers** in a craft → fit (P1/P2), regardless of the craft.
+- Sells **the craft/service** itself, or performs a **procedure/physical/visual**
+  skill, or a **passive product** → Cut.
+- "Expert but in *performing*, not providing info" (your `@theenglishaesthetic`
+  note) is the cleanest one-line disqualifier — reuse it.

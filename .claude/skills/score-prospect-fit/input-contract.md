@@ -6,8 +6,13 @@ skill cannot see" in `field-glossary.md`). The single most decisive fit signal �
 skill can't reach. So it must be resolved **upstream, by the scraper** that
 builds the CSV, and passed in as a column.
 
-This file specs that handoff. It is **not** built in this repo — it's the
-requirement the scraper (a separate tool) must satisfy so v2 scoring works.
+This file specs that handoff. There are **two ways** to produce `offer_type`:
+
+- **`link-reader/`** (in this repo) — reads the link-in-bio via a real Chrome on
+  port 9222 and returns page text to classify. Use this when you can run a
+  browser at score time. See `link-reader/README.md`.
+- **The upstream scraper** — bakes `offer_type` into the CSV as it scrapes. Best
+  at batch scale. The rest of this file specs that column.
 
 ## Required new column: `offer_type`
 

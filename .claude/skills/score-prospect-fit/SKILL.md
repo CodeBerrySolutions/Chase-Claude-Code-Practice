@@ -22,13 +22,26 @@ or random product accounts.
 ## What the skill can and cannot see
 
 The skill reads **text only** — bio, name, category, links present, and the
-prospect's comment. It **cannot see photos or videos**, and (in this
-environment) it **cannot open link-in-bio pages** to read the real offer. So
-the deciding signal — *what do they actually sell?* — is often not visible in
-the text. Handle that with the three-state offer gate below and the
-`needs_review` flag; never fail a prospect merely because the text didn't spell
-out the offer. When the scraper supplies an `offer_type` field
-(`field-glossary.md`), trust it over inference.
+prospect's comment. It **cannot see photos or videos**, and plain fetching
+**cannot open link-in-bio pages** (Linktree/Stan/most sites 403 bots). So the
+deciding signal — *what do they actually sell?* — is often not visible in the
+text. Two ways to close that gap:
+
+1. **`link-reader/`** (recommended) — opens each link-in-bio in a **real Chrome
+   over port 9222** (defeats the 403s) and returns the page text to classify
+   into `offer_type`. See `link-reader/README.md`. This is how you actually read
+   the offer.
+2. The scraper supplying an **`offer_type`** field (`field-glossary.md`).
+
+When neither is available, use the three-state offer gate and the `needs_review`
+flag; **never** fail a prospect merely because the text didn't spell out the
+offer. When `offer_type` (from either source) is present, trust it over
+inference.
+
+**ICP reminder:** the fit is *interactive coaching/teaching of knowledge* — not
+a performed craft, a procedure, a physical/visual skill, a passive product, or a
+community. Read `icp-flags.md` before scoring; those exclusions are where the
+early versions were wrong.
 
 ## Input
 

@@ -26,16 +26,29 @@ membership-with-delivery)? Resolve to one of three states.
 2. Explicit bio/comment language.
 3. Nothing conclusive → unconfirmed.
 
-**State A — Service-confirmed.** `offer_type` is `service` or `mixed`, **or** the
-text plainly shows a service offer: "DM COACH", "book a call", "apply", "1:1",
-"group program", "mastermind", "coaching", "work with me", a booking/consult
-link. → passes the gate, continue down the waterfall. (Selling a course *and*
+**State A — Service-confirmed.** The offer is **interactive, done-with-you
+coaching or teaching of knowledge** — 1:1, group program, mastermind, cohort.
+`offer_type` is `service`/`mixed`, or the text plainly shows it ("DM COACH",
+"book a call", "apply", "1:1", "group program", "mastermind", "coaching",
+"work with me", a booking/consult link). → passes the gate. (A course *and*
 coaching = `mixed` = passes.)
 
-**State B — Product-only-confirmed.** `offer_type == product_only`, **or** the
-text gives positive evidence the entire business is merch / supplements /
-physical product / self-guided course / ebook with **no** service component. →
-**D_fail**, reason `no_serviceable_offer`. Stop.
+**State B — Out-of-ICP offer (confirmed).** `offer_type == product_only`, **or**
+positive evidence the offer is one of the ICP exclusions (`icp-flags.md`) — it
+is **not** interactive coaching but instead:
+- a **performed craft / done-for-you service** (photographer selling photos,
+  designer selling design — `@vickibartel`, `@honeywavecreative`);
+- a **physical / procedural / hands-on / visual skill** (pilates, injectables /
+  medical procedure, teaching-to-read-music — `@patriciamedrospilates`,
+  `@theenglishaesthetic`, `@ashleeyoungmusicstudio`);
+- a **passive product with no interactivity** (self-guided course/ebook, no sign
+  of student contact);
+- a **community / movement**, not an individual expert (`@buywomenbuilt`);
+- merch / supplements / physical product / ecommerce.
+
+→ **D_fail**, reason `no_serviceable_offer`. Stop. This fires *even if the bio
+reads "coach/expert"* — the disqualifier is "expert in **performing**, not in
+**providing info**."
 
 > Worked example — `@annette_milbers`: bio reads coach-adjacent ("Functional
 > Hormone Specialist", "Nutrition Coach"), but her link-in-bio sells only an
@@ -98,6 +111,29 @@ niche → **A_qualified**, reason `qualified`. Go assign an ICP flag
 | `off_niche` | Outside target verticals (realtor, product brand, generic creator) | D_fail |
 | `mega_reach` | > ~150k followers, too big for warm 1:1 | D_fail |
 | `private` | Private account, can't vet | C_private |
+
+## Priority signals (beyond fit)
+
+Fit says *whether* to reach out; these adjust *how soon*. From real review notes:
+
+- **Capacity / "at their limit."** BerryNova helps people offload — so someone
+  who is **near capacity** is a hotter prospect than someone with room to spare.
+  A large following with **low engagement / little content traction** suggests
+  they are *not* at capacity and less likely to want help → **downgrade to Low**
+  (e.g. `@tiana_smith_coaching`, `@projectleaderacademy`: "almost no engagement,
+  unlikely they are at their limit").
+- **Already scaled.** Running an agency or clearly past the DIY stage → **Low**
+  (still worth a touch — they get lots of DMs — but not a priority):
+  `@sallyhogshead`.
+- **Muddy / unclear / dead offer.** Bio fits but the offer is unclear, the
+  link mixes ecommerce with coaching, or the site is down/ancient → **Low** and
+  `needs_review` (`@barbpitcock`, `@grow.with.roshnii`, `@maryumsharif`,
+  `@waldorf_essentials`, `@jenniwedmore`).
+- **In-person / presential lean.** Speaking coach, retreat-led, or otherwise
+  partly offline → **Low** (`@chantellespeaks`).
+- **Buried-but-present offer still counts.** A coaching offer that exists but is
+  hard to find keeps the fit — don't reject for it, just note it
+  (`@maryghyatt`: "does coaching but it's kinda buried").
 
 ## Edge cases (where judgment beats the thresholds)
 

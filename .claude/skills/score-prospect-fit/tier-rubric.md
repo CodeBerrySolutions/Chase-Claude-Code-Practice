@@ -1,86 +1,116 @@
 # Tier Rubric
 
 The waterfall in full. Gates are evaluated top to bottom; the first match wins.
-Thresholds are calibrated to the `pilot_scored_profiles_v1` labels (a decoded
-version of these gates reproduces ~98% of the pilot's tiers; the remaining ~2%
-are edge calls the pilot made on niche/content quality — see "Edge cases").
+Thresholds were calibrated to the `pilot_scored_profiles_v1` labels (a decoded
+version reproduces ~98% of the pilot's tiers). v2 adds the **offer gate** as the
+central test and separates **priority** from tier.
+
+Every scored profile carries a **reason code** (see the taxonomy at the end).
 
 ## Gate 1 — C_private (privacy)
 
-`private == True` → **C_private**. Stop.
+`private == True` → **C_private**, reason `private`. Stop.
 
-Rationale: a private account can't be vetted (no visible content) and is a poor
-warm-DM target. This is absolute — a private account with 40k followers and a
-perfect name is still C_private, not A. In the pilot, **every** C_private row
-was private and nothing else was.
+Absolute — a private account with 40k followers and a perfect name is still
+C_private. In the pilot, every C_private row was private and nothing else.
 
-## Gate 2 — D_fail (hard disqualifiers)
+## Gate 2 — The offer gate (central test)
 
-Any one of these → **D_fail**. Stop.
+The question that actually decides fit: **does this person sell a done-with-you
+offer BerryNova could service** (1:1 coaching, group program, mastermind,
+membership-with-delivery)? Resolve to one of three states.
 
-- **No offer + not an expert.** The bio isn't selling anything (no product,
-  service, program, booking link, or lead magnet) *and* the person isn't
-  plainly presenting as a coach/expert. Roughly two-thirds of pilot D_fails
-  are here. Judge from the bio, not just the `bio_offer` flag.
-- **Mega / celebrity reach.** Followers **> ~150,000**. These are the seed's
-  peers-at-scale or influencers — not warm 1:1 prospects. The pilot failed
-  everyone from ~155k up to 1.9M regardless of how good the bio was.
-- **Too little traction.** Followers **< ~1,000**. Not enough audience to be
-  worth a bespoke touch; often brand-new or dabbler accounts.
-- **Off-ICP.** Physical-product / retail brand, e-commerce shop, generic
-  lifestyle or travel creator, unrelated local service (bakery, day spa,
-  cleaning), or non-target spam. The niche simply isn't who we sell to.
+**Signal sources, in priority order:**
+1. `offer_type` from the scraper (`service` / `mixed` / `product_only` /
+   `unknown`) — trust this first when present.
+2. Explicit bio/comment language.
+3. Nothing conclusive → unconfirmed.
 
-If none of the above fires, the profile is a live candidate — continue.
+**State A — Service-confirmed.** `offer_type` is `service` or `mixed`, **or** the
+text plainly shows a service offer: "DM COACH", "book a call", "apply", "1:1",
+"group program", "mastermind", "coaching", "work with me", a booking/consult
+link. → passes the gate, continue down the waterfall. (Selling a course *and*
+coaching = `mixed` = passes.)
 
-## Gate 3 — B_inactive (dormant)
+**State B — Product-only-confirmed.** `offer_type == product_only`, **or** the
+text gives positive evidence the entire business is merch / supplements /
+physical product / self-guided course / ebook with **no** service component. →
+**D_fail**, reason `no_serviceable_offer`. Stop.
 
-Live candidate but `last_post` is **older than ~90 days** from today (and the
-account is in a reasonable range, ~2k+ followers) → **B_inactive**.
+> Worked example — `@annette_milbers`: bio reads coach-adjacent ("Functional
+> Hormone Specialist", "Nutrition Coach"), but her link-in-bio sells only an
+> ebook + self-guided programs + merch and her posts lean hands-on training —
+> nothing to offload. With `offer_type=product_only` she is `no_serviceable_offer`.
+> **From bio text alone**, though, she resolves to State C (unconfirmed) — which
+> is exactly why the upstream `offer_type` matters.
 
-Good fundamentals, but the account is dormant, so outreach is lower-yield and
-lower-priority. If the account is *both* stale and below the ~1k floor, it's
-D_fail (Gate 2 already caught it), not B_inactive.
+**State C — Unconfirmed.** The text is silent on offer type and no `offer_type`
+was supplied (the common case). → **do NOT reject.** Continue, carrying reason
+`offer_unconfirmed` and `needs_review = yes`. A qualified-looking profile with an
+unconfirmed offer still flows to A/B — it just gets flagged for a human to verify
+before outreach, and drops to **priority: Low** (Step 3 in `SKILL.md`).
 
-## Gate 4 — B_band_edge (follower band edge)
+## Gate 3 — D_fail (other hard disqualifiers)
 
-Live, active, has an offer, right niche — but follower count sits just outside
-the A sweet spot:
+Any one → **D_fail**. Stop.
 
-- **Low edge:** roughly **1,000–2,000** followers (a little small), or
-- **High edge:** roughly **48,000–150,000** followers (a little big).
+- **No offer at all.** Not selling anything and not presenting as a
+  coach/expert — a personal/lifestyle account. Reason `no_offer`.
+- **Mega / celebrity reach.** Followers **> ~150,000** — too big for warm 1:1.
+  Reason `mega_reach`.
+- **Off-ICP niche.** Realtor, physical-product/retail brand, e-commerce shop,
+  generic lifestyle/travel creator, unrelated local service (bakery, day spa),
+  or spam. Reason `off_niche`.
 
-→ **B_band_edge**. Real prospects, just a notch off the ideal size, so second
-priority behind A.
+Note: **being small is no longer a D_fail.** The old "< ~1k followers → D_fail"
+floor is removed. A genuine fit that is merely tiny is still a fit — it is
+handled by **priority: Nurture**, not rejection. Only reject the tiny ones that
+*also* trip a real gate above (no offer / off-niche / product-only).
 
-## Gate 5 — A_qualified (the sweet spot)
+## Gate 4 — B_inactive (dormant)
 
-Everything true at once:
+A fit, but `last_post` is **older than ~90 days** → **B_inactive**, reason
+`inactive`. Good bones, dormant; low-yield now.
 
-- Public, and
-- Posted within ~90 days, and
-- Has a genuine offer / CTA in the bio, and
-- Followers in the **~2,000–48,000** sweet spot, and
-- Coaching / expert-adjacent niche.
+## Gate 5 — B_band_edge (follower band edge)
 
-→ **A_qualified**. Then go assign an ICP flag (`icp-flags.md`).
+A fit, active, but follower count sits just outside the A sweet spot:
+**~1,000–2,000** (low) or **~48,000–150,000** (high) → **B_band_edge**, reason
+`band_edge`.
+
+## Gate 6 — A_qualified (the sweet spot)
+
+Public, active (posted within ~90 days), offer service-confirmed (or unconfirmed
+but otherwise strong), followers **~2,000–48,000**, coaching/expert-adjacent
+niche → **A_qualified**, reason `qualified`. Go assign an ICP flag
+(`icp-flags.md`) and priority.
+
+## Reason code taxonomy
+
+| Code | Meaning | Typical tier |
+|---|---|---|
+| `qualified` | Clears every gate | A_qualified |
+| `offer_unconfirmed` | Fit, but offer type not visible in text — verify before outreach | A / B (+ needs_review) |
+| `band_edge` | Fit, follower count a notch small or big | B_band_edge |
+| `inactive` | Fit, but dormant >90 days | B_inactive |
+| `no_serviceable_offer` | Sells product/self-guided/merch only — nothing to offload | D_fail |
+| `no_offer` | Not selling anything; personal/lifestyle account | D_fail |
+| `off_niche` | Outside target verticals (realtor, product brand, generic creator) | D_fail |
+| `mega_reach` | > ~150k followers, too big for warm 1:1 | D_fail |
+| `private` | Private account, can't vet | C_private |
 
 ## Edge cases (where judgment beats the thresholds)
 
-The pilot overrode the mechanical gates in a handful of spots. Mirror that
-judgment:
+- **Offer-detector false-negative.** `bio_offer == False` but the bio has a clear
+  CTA ("Download the method", "DM COACH", a checkout link) → treat as having an
+  offer (State A). Pilot kept `@linzey_taylor` (5k) as A here.
+- **Lenient high-edge.** A ~50k–135k account reading as a genuine personal-brand
+  peer can be B_band_edge, not D_fail.
+- **Low-band niche/quality.** In the ~1k–2k zone, let niche + offer + content
+  quality decide between a Nurture-priority fit and an off_niche D_fail — not
+  follower count alone.
+- **Big + stale.** A >100k account that is also months-dormant is D_fail
+  (`mega_reach`), not B_inactive.
 
-- **Offer detector false-negative.** `bio_offer == False` but the bio clearly
-  has a CTA ("Download the method", "DM COACH", a checkout link). Treat as
-  having an offer. (Pilot kept `linzey_taylor`, 5k, as A here.)
-- **Lenient high-edge.** A ~50k–135k account that reads as a genuine
-  personal-brand peer (not a faceless mega) can be **B_band_edge** even if the
-  offer signal is weak — the pilot did this rather than dumping them to D_fail.
-- **Low-band niche cull.** Two 1k–2k accounts the pilot dropped to **D_fail**
-  despite an offer, because the niche/content quality was thin. In the 1k–2k
-  zone, let niche fit and content quality decide between B_band_edge and
-  D_fail rather than follower count alone.
-- **Big + stale.** A large account (>100k) that's also months-dormant reads as
-  **D_fail** (out of band and dead), not B_inactive.
-
-When you make one of these calls, say so in the Why line so it's auditable.
+Whenever you override a mechanical flag, say so in the Reason line so the call is
+auditable.

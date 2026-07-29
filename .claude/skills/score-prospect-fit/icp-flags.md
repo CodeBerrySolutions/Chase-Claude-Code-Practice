@@ -7,6 +7,13 @@ bullseye. B / C / D profiles leave `icp_flag` blank.
 Decide the flag from the **bio + full_name + category + their comment**, not
 from follower count.
 
+**The offer gate wins over the niche read.** ICP is about *what niche* they're
+in; the offer gate (`tier-rubric.md`, Gate 2) is about *whether they sell a
+serviceable offer*. A profile that reads like a textbook P1 coach but is
+confirmed **product-only** (merch / self-guided course only) is a **D_fail
+(`no_serviceable_offer`)**, and never gets an ICP flag at all. Only assign
+P1/P2/P3 to profiles that already cleared the offer gate.
+
 ## P1_coach_expert — the bullseye
 
 Sells knowledge, coaching, or transformation as the core business. They coach,

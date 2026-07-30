@@ -49,6 +49,12 @@ PF_BROWSER="/c/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe" 
 **Firefox is not supported** for the attach approach — it uses a different
 remote-debugging protocol that the CDP reader can't drive.
 
+### Where to put the CSV
+Drop your scraped prospects CSV into the **`input/`** folder here and reference it
+by that path. Files in `input/` are gitignored, so prospect data is never
+committed. (You can also pass an absolute path from anywhere — `input/` is just a
+tidy default.)
+
 ### Windows — PowerShell (recommended, copy-paste friendly)
 Use the native PowerShell runner — no Git Bash needed. Requires Node
 (nodejs.org) and Python (python.org, "Add to PATH") installed.
@@ -57,7 +63,8 @@ cd $HOME\Chase-Claude-Code-Practice
 git checkout main
 git pull
 cd .claude\skills\score-prospect-fit\pipeline
-powershell -ExecutionPolicy Bypass -File .\bootstrap.ps1 C:\Users\you\Downloads\prospects.csv
+# put your CSV in .\input\ first, then:
+powershell -ExecutionPolicy Bypass -File .\bootstrap.ps1 .\input\prospects.csv
 ```
 Auto-detects Chrome/Brave/Edge. Force one with `-Browser "C:\...\brave.exe"`,
 change the debug port with `-Port 9333`.

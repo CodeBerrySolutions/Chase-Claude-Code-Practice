@@ -39,6 +39,17 @@ Run on a machine with a **real browser + open network** (your laptop or the
 scraper box). A locked-down CI/cloud sandbox has no route to the sites and no
 browser to drive.
 
+### Windows
+These are bash scripts — **run them in Git Bash** (bundled with Git for Windows),
+not PowerShell. Requires Node (nodejs.org) and Python (python.org) on PATH.
+```bash
+# in Git Bash, from the repo:
+cd .claude/skills/score-prospect-fit/pipeline
+./bootstrap.sh /c/Users/you/path/to/prospects.csv 2026-07-30
+```
+bootstrap.sh knows the Windows Chrome path and uses `python` when `python3`
+isn't present. (Or use WSL, where the plain Linux instructions apply.)
+
 Each step is standalone and pipeable, so you can rerun just one (e.g. re-classify
 without re-reading links).
 

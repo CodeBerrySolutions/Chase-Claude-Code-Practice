@@ -17,9 +17,10 @@ PORT="${PF_CDP_PORT:-9222}"
 SKILL_DIR="$(cd .. && pwd)"     # install node deps here so link-reader resolves them
 
 # --- 1. prereqs ---------------------------------------------------------------
-for bin in node python3; do
-  command -v "$bin" >/dev/null 2>&1 || { echo "ERROR: '$bin' is required but not found." >&2; exit 1; }
-done
+command -v node >/dev/null 2>&1 || { echo "ERROR: Node.js not found on PATH (install from nodejs.org)." >&2; exit 1; }
+PY="${PYTHON:-$(command -v python3 || command -v python || true)}"   # Windows uses 'python'
+[ -n "$PY" ] || { echo "ERROR: Python not found on PATH (install from python.org)." >&2; exit 1; }
+export PYTHON="$PY"   # run.sh picks this up
 
 cdp_up() {
   if command -v curl >/dev/null 2>&1; then
@@ -46,7 +47,10 @@ else
   CHROME=""
   for c in google-chrome google-chrome-stable chromium chromium-browser \
            "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
-           "/Applications/Chromium.app/Contents/MacOS/Chromium"; do
+           "/Applications/Chromium.app/Contents/MacOS/Chromium" \
+           "/c/Program Files/Google/Chrome/Application/chrome.exe" \
+           "/c/Program Files (x86)/Google/Chrome/Application/chrome.exe" \
+           "$LOCALAPPDATA/Google/Chrome/Application/chrome.exe"; do
     if command -v "$c" >/dev/null 2>&1 || [ -x "$c" ]; then CHROME="$c"; break; fi
   done
   if [ -n "$CHROME" ]; then

@@ -14,11 +14,14 @@ CSV="${1:?usage: ./run.sh profiles.csv [today YYYY-MM-DD]}"
 TODAY="${2:-$(date +%F)}"
 OUT=out; mkdir -p "$OUT"
 export NODE_PATH="${NODE_PATH:-$(npm root -g)}"
+# python may be python3 (mac/linux) or python (Windows/Git Bash)
+PY="${PYTHON:-$(command -v python3 || command -v python || true)}"
+[ -n "$PY" ] || { echo "ERROR: no python3/python on PATH" >&2; exit 1; }
 
-echo "[1/4] CSV -> profiles.json"
-python3 1_csv_to_profiles.py "$CSV" > "$OUT/profiles.json"
+echo "[1/5] CSV -> profiles.json"
+"$PY" 1_csv_to_profiles.py "$CSV" > "$OUT/profiles.json"
 
-echo "[2/4] profiles.json -> pages.json  (real Chrome on :9222)"
+echo "[2/5] profiles.json -> pages.json  (real Chrome on :9222)"
 if node ../link-reader/read-links.mjs "$OUT/profiles.json" > "$OUT/pages.json" 2> "$OUT/read.log"; then
   echo "      $(grep -c '"ok": true' "$OUT/pages.json" || true) link(s) read; see $OUT/read.log"
 else
@@ -26,14 +29,14 @@ else
   echo "[]" > "$OUT/pages.json"
 fi
 
-echo "[3/4] pages.json -> offers.json  (offer_type classification)"
-python3 2_classify_offers.py "$OUT/pages.json" > "$OUT/offers.json"
+echo "[3/5] pages.json -> offers.json  (offer_type classification)"
+"$PY" 2_classify_offers.py "$OUT/pages.json" > "$OUT/offers.json"
 
 echo "[4/5] CSV + offers.json -> scored.json"
-python3 3_score.py "$CSV" "$OUT/offers.json" --today "$TODAY" > "$OUT/scored.json"
+"$PY" 3_score.py "$CSV" "$OUT/offers.json" --today "$TODAY" > "$OUT/scored.json"
 
 echo "[5/5] scored.json -> review console"
-python3 4_build_console.py "$OUT/scored.json" --csv "$CSV" -o "$OUT/fit-review.html" \
+"$PY" 4_build_console.py "$OUT/scored.json" --csv "$CSV" -o "$OUT/fit-review.html" \
   --source "$(basename "$CSV")"
 
 echo "Done -> $OUT/scored.json  and  $OUT/fit-review.html"

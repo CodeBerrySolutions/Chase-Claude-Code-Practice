@@ -44,15 +44,25 @@ LAUNCHED_PID=""
 if cdp_up; then
   echo "[chrome] already listening on :$PORT — reusing it"
 else
+  # Any Chromium-based browser works (Chrome, Brave, Chromium, Edge) — they all
+  # speak the DevTools protocol on :9222. Firefox does NOT (different protocol).
+  # Override with PF_BROWSER=/path/to/browser to force a specific one.
   CHROME=""
-  for c in google-chrome google-chrome-stable chromium chromium-browser \
-           "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
-           "/Applications/Chromium.app/Contents/MacOS/Chromium" \
-           "/c/Program Files/Google/Chrome/Application/chrome.exe" \
-           "/c/Program Files (x86)/Google/Chrome/Application/chrome.exe" \
-           "$LOCALAPPDATA/Google/Chrome/Application/chrome.exe"; do
-    if command -v "$c" >/dev/null 2>&1 || [ -x "$c" ]; then CHROME="$c"; break; fi
-  done
+  if [ -n "${PF_BROWSER:-}" ]; then
+    CHROME="$PF_BROWSER"
+  else
+    for c in google-chrome google-chrome-stable brave brave-browser chromium chromium-browser microsoft-edge \
+             "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+             "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser" \
+             "/Applications/Chromium.app/Contents/MacOS/Chromium" \
+             "/c/Program Files/Google/Chrome/Application/chrome.exe" \
+             "/c/Program Files (x86)/Google/Chrome/Application/chrome.exe" \
+             "$LOCALAPPDATA/Google/Chrome/Application/chrome.exe" \
+             "/c/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe" \
+             "$LOCALAPPDATA/BraveSoftware/Brave-Browser/Application/brave.exe"; do
+      if command -v "$c" >/dev/null 2>&1 || [ -x "$c" ]; then CHROME="$c"; break; fi
+    done
+  fi
   if [ -n "$CHROME" ]; then
     echo "[chrome] launching: $CHROME --remote-debugging-port=$PORT"
     "$CHROME" --remote-debugging-port="$PORT" \

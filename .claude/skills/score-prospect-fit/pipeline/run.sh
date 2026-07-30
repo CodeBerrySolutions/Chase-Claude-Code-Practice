@@ -29,7 +29,11 @@ fi
 echo "[3/4] pages.json -> offers.json  (offer_type classification)"
 python3 2_classify_offers.py "$OUT/pages.json" > "$OUT/offers.json"
 
-echo "[4/4] CSV + offers.json -> scored.json"
+echo "[4/5] CSV + offers.json -> scored.json"
 python3 3_score.py "$CSV" "$OUT/offers.json" --today "$TODAY" > "$OUT/scored.json"
 
-echo "Done -> $OUT/scored.json"
+echo "[5/5] scored.json -> review console"
+python3 4_build_console.py "$OUT/scored.json" --csv "$CSV" -o "$OUT/fit-review.html" \
+  --source "$(basename "$CSV")"
+
+echo "Done -> $OUT/scored.json  and  $OUT/fit-review.html"

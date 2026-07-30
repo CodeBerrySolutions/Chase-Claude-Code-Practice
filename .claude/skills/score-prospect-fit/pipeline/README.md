@@ -21,13 +21,23 @@ scored.json
 
 ## Run it
 
+**Easiest — one command** (checks prereqs, installs Playwright, launches Chrome
+on :9222, runs everything):
 ```bash
-# once: start Chrome with remote debugging, keep it open
-google-chrome --remote-debugging-port=9222 --user-data-dir=/tmp/pf-chrome &
-
-./run.sh path/to/scraped.csv 2026-07-30      # 2nd arg = "today" for the stale check
-# -> out/scored.json  (+ out/{profiles,pages,offers}.json)
+./bootstrap.sh path/to/scraped.csv 2026-07-30
+# -> out/scored.json  and  out/fit-review.html
 ```
+
+**Manual** (if you already have Chrome on :9222):
+```bash
+google-chrome --remote-debugging-port=9222 --user-data-dir=/tmp/pf-chrome &   # keep open
+./run.sh path/to/scraped.csv 2026-07-30      # 2nd arg = "today" for the stale check
+# -> out/scored.json  (+ out/{profiles,pages,offers}.json, out/fit-review.html)
+```
+
+Run on a machine with a **real browser + open network** (your laptop or the
+scraper box). A locked-down CI/cloud sandbox has no route to the sites and no
+browser to drive.
 
 Each step is standalone and pipeable, so you can rerun just one (e.g. re-classify
 without re-reading links).

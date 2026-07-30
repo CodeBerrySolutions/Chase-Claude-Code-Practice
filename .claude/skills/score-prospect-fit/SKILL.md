@@ -1,110 +1,150 @@
 ---
 name: score-prospect-fit
-description: Scores a coach/expert prospect against Berry Nova's ICP and classifies which door they enter through (acquisition-mode or overloaded). Use when the user provides one or more coach/expert profiles, bios, social handles, or scraped prospect rows and asks whether they fit the ICP, to score/qualify a lead, to vet or filter prospects, or which door a coach enters through.
+description: Score Instagram profiles for warm-DM outreach fit — assign each a tier (A_qualified / B_band_edge / B_inactive / C_private / D_fail), a priority (High / Low / Nurture), a reason code, and, for qualified prospects, an ICP flag (P1_coach_expert / P2_adjacent / P3_nonfit). The central test is whether the person sells a done-with-you offer BerryNova could service. Works on one profile pasted inline or a batch (CSV export of scraped seed-audience profiles). Does NOT scrape, DM, or write outreach copy. Trigger phrases -- "score these prospects", "assess prospect fit", "which of these are qualified", "tier this list", "how does the skill assess them".
 ---
 
 # Score Prospect Fit
 
-Score each coach/expert prospect against Berry Nova's ICP and assign a door.
+Score-only. This skill decides whether a scraped Instagram profile is worth a
+warm 1:1 DM, and if so how strong a fit and how urgently — it does not scrape
+profiles, send DMs, or draft outreach copy. The job stops at: tier, priority,
+reason code, ICP flag (for qualified profiles), and the one-line why.
 
-Context: Berry Nova sells an AI operator platform for coaches — "operational depth plus a brain that learns." It makes a coach's EXISTING delivery time efficient. It does NOT generate leads. Keep this framing in mind for every judgment below.
+The prospects engaged with a "seed" account's post — the seeds are
+online-business coaches (Amy Porterfield, James Wedmore, Jasmine Star, Jenna
+Kutcher; the `seeds` field records which). We want the seed's *peers and
+adjacent service pros* who **sell a done-with-you offer BerryNova could take
+work off of** — 1:1 coaching, a group program, a mastermind, a
+membership-with-delivery. We do **not** want product-only sellers (merch,
+supplements, self-guided courses/ebooks), their fans, competitors' megabrands,
+or random product accounts.
 
-## Procedure
+## What the skill can and cannot see
 
-Apply the ICP in this exact order. Check hard disqualifiers before weighing any positive signal.
+The skill reads **text only** — bio, name, category, links present, and the
+prospect's comment. It **cannot see photos or videos**, and plain fetching
+**cannot open link-in-bio pages** (Linktree/Stan/most sites 403 bots). So the
+deciding signal — *what do they actually sell?* — is often not visible in the
+text. Two ways to close that gap:
 
-### Step 1 — Hard disqualifiers (check first, in order)
+1. **`link-reader/`** (recommended) — opens each link-in-bio in a **real Chrome
+   over port 9222** (defeats the 403s) and returns the page text to classify
+   into `offer_type`. See `link-reader/README.md`. This is how you actually read
+   the offer.
+2. The scraper supplying an **`offer_type`** field (`field-glossary.md`).
 
-1. **Lead-starved.** If the prospect's main problem is GETTING clients (asking for lead gen, complaining about empty pipeline, "how do I find clients"), DISQUALIFY. The product will not create new leads for them.
-2. **Undocumented methodology.** The prospect's distinctive methodology must be documented in written docs or audio tracks. Audio may have accompanying video, but everything important must be understandable from audio alone. If no such documentation exists, DISQUALIFY — the methodology cannot be cloned.
+When neither is available, use the three-state offer gate and the `needs_review`
+flag; **never** fail a prospect merely because the text didn't spell out the
+offer. When `offer_type` (from either source) is present, trust it over
+inference.
 
-If either fires, stop evaluating that prospect: verdict is `disqualified`, door is `n/a`, and name the disqualifier.
+**ICP reminder:** the fit is *interactive coaching/teaching of knowledge* — not
+a performed craft, a procedure, a physical/visual skill, a passive product, or a
+community. Read `icp-flags.md` before scoring; those exclusions are where the
+early versions were wrong.
 
-### Step 2 — Positive profile
+## Input
 
-Only if no disqualifier fired, assess these signals:
+- **A single profile** pasted inline, or
+- **A batch** — a CSV of scraped profiles. Read `field-glossary.md` before
+  scoring a batch (column meanings, load-bearing vs. decorative signals, and the
+  `offer_type` contract).
 
-- Coach or expert with a DISTINCTIVE methodology, delivering 1-on-1 or group sessions.
-- At or very near their client-capacity ceiling.
-- Likely tried or considered hiring a virtual assistant.
-- Active social media promoting their services, with at least a modest following.
+Read the whole profile before scoring. The mechanical flags (`bio_offer`, etc.)
+are noisy hints; when a flag contradicts the plain bio, trust the bio.
 
-Do not inflate. A coach with a huge audience but no documented methodology is still disqualified. Volume of following is a signal, not a criterion — it never substitutes for the criteria above.
+## Step 1 — Run the tier waterfall
 
-### Step 3 — Classify the door
+Apply the gates **in order**; first match wins. Full detail and thresholds are
+in `tier-rubric.md` — read it before scoring.
 
-The door drives downstream outreach messaging:
+1. **C_private** — the account is private. Can't vet, can't warm-DM. Stop.
+   → reason `private`.
+2. **Offer gate (the central test).** Resolve what they sell into one of three
+   states:
+   - **Service-confirmed** (bio/comment/`offer_type` shows a done-with-you
+     offer) → passes, continue.
+   - **Product-only-confirmed** (positive evidence of merch / supplements /
+     self-guided course / ebook only, *no* service — usually from
+     `offer_type=product_only`, sometimes explicit in bio) → **D_fail**, reason
+     `no_serviceable_offer`. Stop.
+   - **Unconfirmed** (text is silent on offer type — the common case) → do NOT
+     reject; continue, but carry reason `offer_unconfirmed` and set
+     `needs_review`.
+3. **D_fail — other hard disqualifiers:** not selling anything at all
+   (`no_offer`); off-ICP niche like realtor / product brand / generic creator
+   (`off_niche`); mega/celebrity reach >~150k (`mega_reach`). Stop.
+4. **B_inactive** — otherwise a fit but last post is stale (>~90 days).
+   → reason `inactive`.
+5. **B_band_edge** — a fit, but follower count sits just outside the A sweet
+   spot (~1k–2k low or ~48k–150k high). → reason `band_edge`.
+6. **A_qualified** — public, active, service-confirmed (or unconfirmed but
+   otherwise strong), ~2k–48k followers, coaching/expert-adjacent niche.
+   → reason `qualified`. Proceed to Step 2.
 
-- `acquisition-mode` — still scaling toward their capacity ceiling.
-- `overloaded` — drowning in clients; at or over their ceiling.
-- `n/a` — disqualified prospects only.
+Note: a genuine fit that is simply **too small** (~sub-2k, even sub-1k) is no
+longer a reject — it stays a fit and is handled by **priority: Nurture** in
+Step 3, not D_fail.
 
-### Step 4 — Verdict
+## Step 2 — Assign the ICP flag (A_qualified only)
 
-- `fit` — no disqualifier fired and positive-profile evidence is affirmatively present.
-- `near-fit` — no disqualifier fired, but evidence for one or more criteria is missing or ambiguous. NEVER guess or assume missing facts; list exactly what evidence is missing.
-- `disqualified` — a hard disqualifier fired.
+Only A_qualified profiles get an ICP flag; B/C/D leave it blank. Definitions and
+examples in `icp-flags.md`.
 
-## Input handling
+- **P1_coach_expert** — sells knowledge/transformation as the core business.
+- **P2_adjacent** — adjacent service pro (photographer, designer, med-spa, etc.)
+  serving founders, with a service (not knowledge) as the core offer.
+- **P3_nonfit** — in-band and legit but off-niche for our offer.
 
-- Accept a single profile or a batch (e.g. rows from a scrape export, a pasted list of bios/handles).
-- Evaluate each prospect independently and output one block per prospect, in input order.
-- Use whatever identifier is available (name, handle, row label) as the prospect name.
+A profile that *looks* P1 but is confirmed product-only is still a **D_fail**
+(`no_serviceable_offer`), not a P1 — the offer gate wins over the niche read.
 
-## Output format
+## Step 3 — Assign priority (independent of tier)
 
-Emit exactly this block per prospect:
+Priority is a separate axis from tier — it answers "how soon do we act?", not
+"are they a fit?". Default mapping (adjustable):
+
+- **High** — A_qualified, service-confirmed, active, P1/P2, sweet-spot size.
+- **Low** — B_band_edge (high side), P3-in-band, or any `offer_unconfirmed` fit.
+- **Nurture** — genuine fit but too small (~sub-2k) or inactive-but-good: keep
+  for later, don't reject, keep out of the active outreach queue.
+- **—** — C_private and D_fail carry no priority.
+
+## Step 4 — Produce the score block
+
+For a **single profile**, end with exactly this:
 
 ```
-PROSPECT: <name/handle>
-VERDICT: fit | near-fit | disqualified
-DOOR: acquisition-mode | overloaded | n/a
-REASON: <one line>
-DISQUALIFIER FIRED: <which, or none>
-MISSING EVIDENCE: <list, only if near-fit>
+PROSPECT SCORE
+--------------
+Handle:       @<username>
+Tier:         <A_qualified | B_band_edge | B_inactive | C_private | D_fail>
+Priority:     <High | Low | Nurture | —>
+ICP flag:     <P1_coach_expert | P2_adjacent | P3_nonfit | — (non-A)>
+Reason:       <reason_code> — <one-line explanation tied to the gate that fired>
+Needs review: <yes (why) | no>
 ```
 
-Rules:
+`Needs review: yes` whenever the offer was `offer_unconfirmed`, or a
+text-invisible signal (visual lean, offer behind a link) could flip the call —
+these are the ones a human should eyeball before outreach.
 
-- `REASON` is one line — the decisive facts, not a rehash of the whole profile.
-- `DISQUALIFIER FIRED` names the specific disqualifier (`lead-starved` or `undocumented methodology`) or says `none`.
-- Include the `MISSING EVIDENCE` line only when verdict is `near-fit`; omit it otherwise.
+For a **batch**, produce a table (Handle, Tier, Priority, ICP, Reason, Review?)
+plus a tally at the top: count per tier, per priority, per ICP among A, and a
+count of `needs_review`. Flag any profile you scored against its mechanical
+flags in the Reason column so the call is auditable.
 
-## Examples
+## Guardrails
 
-### Example 1 — clear fit (overloaded)
-
-Input: "Marta K., strength coach for postpartum athletes. Runs her trademarked 'Rebuild Protocol' — full written manual plus a recorded audio course. 38 active 1-on-1 clients, waitlist of 12, posted last week that she's 'turning people away'. 22k Instagram followers, hired a VA last year. "
-
-```
-PROSPECT: Marta K.
-VERDICT: fit
-DOOR: overloaded
-REASON: Distinctive documented methodology (written manual + audio course), 1-on-1 delivery, over capacity with a waitlist, VA history, active social presence.
-DISQUALIFIER FIRED: none
-```
-
-### Example 2 — disqualified (lead-starved)
-
-Input: "Dev R., business coach, well-produced framework PDF, but posts say 'struggling to fill my calendar, DM me for a free session' and he's asking about lead-gen tools."
-
-```
-PROSPECT: Dev R.
-VERDICT: disqualified
-DOOR: n/a
-REASON: Primary problem is getting clients; Berry Nova makes delivery efficient but does not generate leads.
-DISQUALIFIER FIRED: lead-starved
-```
-
-### Example 3 — near-fit (methodology documentation unknown)
-
-Input: "@mindsetwithlena — executive coach, 40k followers, mentions her 'Clarity Ladder' method in posts, says she's 'fully booked through September'. No visible course, manual, or audio content."
-
-```
-PROSPECT: @mindsetwithlena
-VERDICT: near-fit
-DOOR: overloaded
-REASON: Distinctive-sounding method and at capacity, but no evidence the methodology is documented in written or audio form.
-DISQUALIFIER FIRED: none
-MISSING EVIDENCE: written docs or audio tracks documenting the Clarity Ladder method; delivery format (1-on-1 vs group); VA hiring history
-```
+- Score fit, don't editorialize. No outreach copy, no DM drafts.
+- Never reject on a silent bio. Absence of a visible offer is `offer_unconfirmed`
+  + `needs_review`, not `no_serviceable_offer`. Reject for product-only only on
+  positive evidence (ideally `offer_type`).
+- Mechanical flags are heuristics with false positives/negatives; the plain bio
+  and `offer_type` win. Note overrides in the Reason line.
+- Follower thresholds are soft edges, not bright lines. Use the band as a prior,
+  then adjust on niche, offer, and content quality.
+- Private is absolute: never anything but C_private.
+- When genuinely torn between two tiers, pick the lower and say why — don't
+  inflate the pipeline. When torn on the offer, prefer `offer_unconfirmed` +
+  `needs_review` over a hard reject.

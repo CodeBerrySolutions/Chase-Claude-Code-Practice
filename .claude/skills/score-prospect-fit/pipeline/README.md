@@ -39,6 +39,16 @@ Run on a machine with a **real browser + open network** (your laptop or the
 scraper box). A locked-down CI/cloud sandbox has no route to the sites and no
 browser to drive.
 
+### Which browser
+Any **Chromium-based** browser works — Chrome, **Brave**, Chromium, or Edge —
+because they all expose the DevTools protocol on `:9222`. bootstrap auto-detects
+them; to force one, set `PF_BROWSER`:
+```bash
+PF_BROWSER="/c/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe" ./bootstrap.sh prospects.csv
+```
+**Firefox is not supported** for the attach approach — it uses a different
+remote-debugging protocol that the CDP reader can't drive.
+
 ### Windows
 These are bash scripts — **run them in Git Bash** (bundled with Git for Windows),
 not PowerShell. Requires Node (nodejs.org) and Python (python.org) on PATH.

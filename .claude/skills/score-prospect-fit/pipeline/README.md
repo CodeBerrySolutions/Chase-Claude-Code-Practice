@@ -49,16 +49,25 @@ PF_BROWSER="/c/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe" 
 **Firefox is not supported** for the attach approach — it uses a different
 remote-debugging protocol that the CDP reader can't drive.
 
-### Windows
-These are bash scripts — **run them in Git Bash** (bundled with Git for Windows),
-not PowerShell. Requires Node (nodejs.org) and Python (python.org) on PATH.
-```bash
-# in Git Bash, from the repo:
-cd .claude/skills/score-prospect-fit/pipeline
-./bootstrap.sh /c/Users/you/path/to/prospects.csv 2026-07-30
+### Windows — PowerShell (recommended, copy-paste friendly)
+Use the native PowerShell runner — no Git Bash needed. Requires Node
+(nodejs.org) and Python (python.org, "Add to PATH") installed.
+```powershell
+cd $HOME\Chase-Claude-Code-Practice
+git checkout main
+git pull
+cd .claude\skills\score-prospect-fit\pipeline
+powershell -ExecutionPolicy Bypass -File .\bootstrap.ps1 C:\Users\you\Downloads\prospects.csv
 ```
-bootstrap.sh knows the Windows Chrome path and uses `python` when `python3`
-isn't present. (Or use WSL, where the plain Linux instructions apply.)
+Auto-detects Chrome/Brave/Edge. Force one with `-Browser "C:\...\brave.exe"`,
+change the debug port with `-Port 9333`.
+
+### Windows — Git Bash (alternative)
+```bash
+cd .claude/skills/score-prospect-fit/pipeline
+./bootstrap.sh /c/Users/you/Downloads/prospects.csv 2026-07-30
+```
+(Or use WSL, where the plain Linux instructions apply.)
 
 Each step is standalone and pipeable, so you can rerun just one (e.g. re-classify
 without re-reading links).

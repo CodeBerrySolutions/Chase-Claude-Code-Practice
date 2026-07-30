@@ -1,0 +1,4 @@
+Drop your scraped prospects CSV here (e.g. prospects.csv), then run:
+  PowerShell:  powershell -ExecutionPolicy Bypass -File .\bootstrap.ps1 .\input\prospects.csv
+  Git Bash:    ./bootstrap.sh input/prospects.csv
+CSV files in this folder are gitignored — prospect data is never committed.

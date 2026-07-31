@@ -100,6 +100,33 @@ exist are named below.
 6. **Phase 0 harvest** — is there an existing scraper feeding rows, or should we
    design that too?
 
+## Status — BUILT (v1, inactive, pending final config)
+
+Deployed to the **BerryNova** project: workflow `bK0muPffxRMXLazZ`
+(`https://phildelude.app.n8n.cloud/workflow/bK0muPffxRMXLazZ`). 9 nodes:
+Weekly Run → Load Prospects (Sheet) → Read Link-in-Bio (Firecrawl) → Screen
+Prospect (OpenAI + structured output; the screen prompt mirrors the skill) →
+Write Screen Result (Sheet upsert on `username`) → Closer Look Only (filter) →
+Notify Closer Look (Slack, one message per closer-look prospect).
+
+Auto-wired creds: Firecrawl BerryNova, OpenAI BerryNova, Slack BerryNova.
+
+**Finish in the n8n UI before activating:**
+1. Load Prospects — pick the input sheet (cols: `username`, `bio`, `ext_urls`);
+   the `pilot_scored_profiles_v1` Sheet works for a first run. Select the Google
+   Sheets credential.
+2. Write Screen Result — pick/create the output sheet + credential.
+3. Notify Closer Look — pick the Slack channel.
+4. Read Link-in-Bio — verify the Firecrawl scrape params + output field
+   (`markdown` vs `data`) in the UI; adjust the Screen Prospect prompt reference
+   if the field name differs.
+5. Test-run on a few rows, then activate.
+
+Deferred: LLM is OpenAI (swap to Claude by adding an Anthropic key + Anthropic
+Chat Model node); v1 pings Slack per closer-look prospect (a batched digest is a
+later change); store is Google Sheets (Supabase optional later); Phase 0 harvest
+still to be designed.
+
 ## What I can do once you steer
 
 I can author and deploy this workflow into your BerryNova n8n project via the n8n

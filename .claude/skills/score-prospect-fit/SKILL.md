@@ -9,7 +9,9 @@ description: Screen a scraped coach/expert profile for Berry Nova ICP fit by rec
 the outward **symptoms** of Berry Nova ICP fit on a scraped profile and flags who
 deserves a closer look. It does **not** reason about the underlying fundamentals
 (the *why*) — that is the *doctor's* job, captured in the canonical
-`Lead Qualification — ICP and Doors` doc (Google Drive, v2 published / v3 draft).
+`Lead Qualification — ICP and Doors` doc (Google Drive). The skill tracks the
+**published v2**; the v3 draft (which would accept recorded client sessions as
+documented methodology) is not yet encoded.
 You screen; a human decides.
 
 Two rules from that doc that govern everything here:
@@ -45,18 +47,19 @@ Read the whole profile (+ link content if present) and check it against the two
 symptom sets in `indicators.md` — read that file; it is the checklist. In brief:
 
 - **Fit-leaning symptoms** (raise fit): a named/trademarked method; a
-  book/course/workbook/podcast catalog *about the method*; a recorded-session or
-  group-call library; a cohort / mentorship / paid community; capacity pressure
-  ("fully booked", waitlist, raising prices, application forms); complaints about
-  DM volume / repeat questions / late-night messages; a hired VA or community
-  manager; text-first deliverables.
+  book/course/workbook/written-curriculum/podcast catalog *about the method*; a
+  cohort / mentorship / paid community; capacity pressure ("fully booked",
+  waitlist, raising prices, application forms); complaints about DM volume /
+  repeat questions / late-night messages; a hired VA or community manager;
+  text-first deliverables.
 - **Non-fit-leaning symptoms** (lower fit; the starred ones are hard stops):
   lead-gen funnels / "DM me to work together" / discovery-call CTAs ★; must-watch
-  demonstration content (form checks, demos, technique) ★; voice-note-first
-  norms; "every engagement is bespoke" / pure B2B consulting ★; Socratic /
-  presence language ("holding space", "I don't give answers") ★; regulated
-  case-specific title (attorney, therapist, clinical) ★; big audience with no
-  program ★; content locked in a closed coaching app.
+  demonstration content (form checks, demos, technique) ★; runs an agency /
+  scaled past personally delivering ★; Socratic / presence language ("holding
+  space", "I don't give answers") ★; regulated case-specific title (attorney,
+  therapist, clinical) ★; big audience with no program ★; voice-note-first norms;
+  "every engagement is bespoke" / pure B2B consulting (→ near-fit: check for a
+  repeatable subset); content locked in a closed coaching app.
 
 ## Step 2 — Assign a door (capacity read)
 
@@ -71,9 +74,10 @@ From the capacity symptoms (`doors.md`):
 Mirror the doc's verdicts, but mark them **provisional** (a screen, not a ruling):
 
 - **disqualified** — a **hard-stop** non-fit symptom fired (must-watch content,
-  Socratic/presence, regulated case-specific, bespoke/consulting, big-audience-
-  no-program), **or** lead-starved. Name the symptom. (lead-starved → tag
-  re-engageable.)
+  Socratic/presence, regulated case-specific, agency/scaled-past-delivering,
+  big-audience-no-program), **or** lead-starved. Name the symptom. (lead-starved
+  → tag re-engageable.) Note: bespoke/consulting is **not** a hard stop → near-fit,
+  check for a repeatable subset.
 - **fit** — fit-leaning symptoms present (a delivery vehicle **and** some sign of
   documented method) and no hard stop.
 - **partial-fit** — signs that only *part* of delivery is text-serviceable (e.g.

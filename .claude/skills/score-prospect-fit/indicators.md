@@ -14,8 +14,7 @@ the fundamentals (doctor + Drive doc) decide the verdict.
 | Symptom (what you can observe) | Proxy for |
 |---|---|
 | Named / trademarked methodology in bio or content — "The X Method", "Rebuild Protocol" | [F4 distinctive] |
-| Book, structured course, workbook, or a podcast back-catalog **about their method** | [F4 volume] |
-| Long-running practice with a recorded-session or group-call **library** | [F4 volume — v3] |
+| Book, structured course, workbook, written curriculum, or a podcast back-catalog **about their method** | [F4 volume] |
 | Runs a **cohort, mentorship, or paid community** (Skool, Circle, alumni group) | [F1 delivery vehicle] |
 | "Fully booked", waitlist, "not taking new clients", turning people away | [door: overloaded] |
 | Complains about DM volume / answering the same questions / 11pm or weekend messages | [F3 offloadable hours] |
@@ -32,7 +31,8 @@ the fundamentals (doctor + Drive doc) decide the verdict.
 | Lead-gen funnel: "DM me to work together", free-discovery-call CTAs everywhere, lead-magnet-heavy, asks about lead tools | [F2 lead-starved] | ★ (→ door: lead-starved, re-engageable) |
 | **Demonstration/must-watch content**: form checks, exercise demos, hands-on technique | [F4b visual; F3b video inbound] | ★ |
 | Voice-note-first community norms | [F3b — shrinks serviceable share] | — (tilts; note it) |
-| "Every engagement is custom/bespoke", pure B2B consulting language | [F1 — nothing repeatable] | ★ |
+| "Every engagement is custom/bespoke", pure B2B consulting language | [F1 — check for a repeatable subset] | — (→ near-fit: does a repeatable slice exist?) |
+| Runs an **agency** / scaled past personally delivering a repeatable program | [F1 — not the expert delivering] | ★ |
 | Socratic / presence language: "holding space", "I ask, I don't answer" | [F5a method mismatch] | ★ |
 | Regulated title needing case-specific advice: attorney, therapist, clinical practice | [F5b ceiling] | ★ |
 | Big audience, **no program / nothing to deliver** | [F1; follower volume is never a criterion] | ★ |

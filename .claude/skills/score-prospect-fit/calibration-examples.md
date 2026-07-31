@@ -35,7 +35,7 @@ doors model and are kept for provenance.
 | `@vickibartel.photographer` | Sells a **performed craft/service**, no repeatable Q&A vehicle | F1 | (Cut) |
 | `@honeywavecreative` | **Passive product** ($97 course, no ongoing delivery) | F1 | (Cut) |
 | `@buywomenbuilt` | **Community/movement, not an expert** — big audience, no program | F1 | (Cut) |
-| `@sallyhogshead` | Offering an **agency** (bespoke), already scaled past self-delivery | F1 | (Low→reconsider) |
+| `@sallyhogshead` | Runs an **agency**, scaled past personally delivering a repeatable program | F1 | (Low → ratified disqualified) |
 
 ## Patterns the screen encodes
 1. **Delivery vehicle + documented method** = the fit spine (`indicators.md`),
@@ -44,7 +44,8 @@ doors model and are kept for provenance.
    photographers) fires the vehicle symptom; `@vickibartel` (sells photography)
    fires the performed-craft hard stop.
 3. **Hard stops** — must-watch/visual, procedure, Socratic, regulated
-   case-specific, bespoke/agency, big-audience-no-program → disqualified.
+   case-specific, agency/scaled-past-delivering, big-audience-no-program →
+   disqualified. (Bespoke/consulting is **not** a hard stop → near-fit.)
 4. **When tells aren't visible → near-fit + missing evidence**, never a
    confident fit or a false disqualified.
 5. **Capacity → door**, read from symptoms; low engagement means capacity is

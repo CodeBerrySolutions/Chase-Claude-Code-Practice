@@ -1,150 +1,116 @@
 ---
 name: score-prospect-fit
-description: Score Instagram profiles for warm-DM outreach fit — assign each a tier (A_qualified / B_band_edge / B_inactive / C_private / D_fail), a priority (High / Low / Nurture), a reason code, and, for qualified prospects, an ICP flag (P1_coach_expert / P2_adjacent / P3_nonfit). The central test is whether the person sells a done-with-you offer BerryNova could service. Works on one profile pasted inline or a batch (CSV export of scraped seed-audience profiles). Does NOT scrape, DM, or write outreach copy. Trigger phrases -- "score these prospects", "assess prospect fit", "which of these are qualified", "tier this list", "how does the skill assess them".
+description: Screen a scraped coach/expert/consultant profile for Berry Nova ICP fit by recognizing observable symptoms — returns a screen verdict (fit / partial-fit / near-fit / not-yet / disqualified), the indicators that fired, and any missing evidence. A symptom screen, not a diagnosis — it filters who gets a closer look; a human makes the real call. Does NOT scrape, DM, or write outreach copy. Trigger phrases -- "score these prospects", "screen this list", "which of these fit the ICP", "assess prospect fit".
 ---
 
 # Score Prospect Fit
 
-Score-only. This skill decides whether a scraped Instagram profile is worth a
-warm 1:1 DM, and if so how strong a fit and how urgently — it does not scrape
-profiles, send DMs, or draft outreach copy. The job stops at: tier, priority,
-reason code, ICP flag (for qualified profiles), and the one-line why.
+**A symptom screen, not a diagnosis.** This skill is the *nurse*: it recognizes
+the outward **symptoms** of Berry Nova ICP fit on a scraped profile and flags who
+deserves a closer look. It does **not** reason about the underlying fundamentals
+(the *why*) — that is the *doctor's* job, captured in the canonical **Berry Nova
+ICP** doc (Google Drive). You screen; a human decides.
 
-The prospects engaged with a "seed" account's post — the seeds are
-online-business coaches (Amy Porterfield, James Wedmore, Jasmine Star, Jenna
-Kutcher; the `seeds` field records which). We want the seed's *peers and
-adjacent service pros* who **sell a done-with-you offer BerryNova could take
-work off of** — 1:1 coaching, a group program, a mastermind, a
-membership-with-delivery. We do **not** want product-only sellers (merch,
-supplements, self-guided courses/ebooks), their fans, competitors' megabrands,
-or random product accounts.
+Governing rules from that doc: **indicators find, fundamentals decide** (these
+symptoms only estimate fit and select who gets examined), and **never cross
+layers** — follower count / engagement are not criteria, only routing priors.
 
-## What the skill can and cannot see
+Screen-only. No outreach, no DMs, no drafting.
 
-The skill reads **text only** — bio, name, category, links present, and the
-prospect's comment. It **cannot see photos or videos**, and plain fetching
-**cannot open link-in-bio pages** (Linktree/Stan/most sites 403 bots). So the
-deciding signal — *what do they actually sell?* — is often not visible in the
-text. Two ways to close that gap:
+## What Berry Nova sells (just enough to calibrate the screen)
 
-1. **`link-reader/`** (recommended) — opens each link-in-bio in a **real Chrome
-   over port 9222** (defeats the 403s) and returns the page text to classify
-   into `offer_type`. See `link-reader/README.md`. This is how you actually read
-   the offer.
-2. The scraper supplying an **`offer_type`** field (`field-glossary.md`).
+Berry Nova sells coaches/experts/consultants **their time back**: people with
+**their own method, delivered to real clients over and over, and drowning in the
+delivery**, whose knowledge **already lives in words** (written or recorded) so
+an AI can absorb it and hand back the hours they burn re-answering the same
+questions. **We do not sell leads.** So screen for the tells of: a repeatable
+practice on their own method, knowledge that survives as text, real
+hours-to-offload, and a method that's captured (or close).
 
-When neither is available, use the three-state offer gate and the `needs_review`
-flag; **never** fail a prospect merely because the text didn't spell out the
-offer. When `offer_type` (from either source) is present, trust it over
-inference.
+## The four fundamentals (the *why* — for your calibration, not the output)
 
-**ICP reminder:** the fit is *interactive coaching/teaching of knowledge* — not
-a performed craft, a procedure, a physical/visual skill, a passive product, or a
-community. Read `icp-flags.md` before scoring; those exclusions are where the
-early versions were wrong.
+1. **A repeatable practice on their own method** — personally delivers ongoing
+   expertise in a repeating format (1:1 with patterns, group, cohort, community)
+   with a method compatible with an **answering** AI. Fails at two edges:
+   nothing repeats (fully custom consulting), or the method's real job is
+   something an answering AI can't do (works by *asking* questions / Socratic; a
+   regulated adviser whose clients need licensed answers). **Title alone doesn't
+   settle it** — a therapist running a non-clinical course can fit.
+2. **Knowledge that lives in words** — could a smart stranger learn it with eyes
+   closed? **Talking-head video counts** (value is in what's *said*). Must-watch
+   instruction (form checks, hands-on technique) does not. Knowledge fields fit,
+   technique fields don't; a mix is **partial-fit**.
+3. **Real hours to hand off** — weekly hours answering existing clients from the
+   method, no live context, in text. If the real problem is *getting* clients →
+   **not-yet**, not no. Count hours, not clients.
+4. **A method that is captured, or close** — exists in written docs, audio,
+   courses, or representative recorded sessions (~10hr screen; exportable).
 
-## Input
+## Step 1 — Screen for symptoms
 
-- **A single profile** pasted inline, or
-- **A batch** — a CSV of scraped profiles. Read `field-glossary.md` before
-  scoring a batch (column meanings, load-bearing vs. decorative signals, and the
-  `offer_type` contract).
+Read the whole profile (+ link content if present) against the two indicator sets
+in `indicators.md` (that file is the checklist). In brief:
 
-Read the whole profile before scoring. The mechanical flags (`bio_offer`, etc.)
-are noisy hints; when a flag contradicts the plain bio, trust the bio.
+- **Lean fit:** a **bio promoting a real program with a link** to a site /
+  application / community (the fastest positive screen); a cohort / mentorship /
+  paid community; teachable material on their own method (named framework, book,
+  course, or a *teaching* podcast); text-first deliverables; overload signs
+  (waitlist, rising prices, booked calendar, VA hired to absorb messages).
+- **Lean disqualify:** no online presence; **private account or a bio that
+  doesn't promote a program**; promoting businesses **outside our ICP**; a
+  **highly bespoke/customized** approach. Plus the structural hard stops (★):
+  works-by-asking / Socratic; regulated case-specific; **must-watch technique**
+  (form checks, hands-on) — but **not** talking-head video.
 
-## Step 1 — Run the tier waterfall
+## Step 2 — Screen verdict
 
-Apply the gates **in order**; first match wins. Full detail and thresholds are
-in `tier-rubric.md` — read it before scoring.
+- **disqualified** — a structural hard stop fired (Socratic/asking, regulated
+  case-specific, must-watch technique), **or** the lean-disqualify indicators
+  clearly hold (private / no program promoted / off-ICP / fully bespoke). Name it.
+- **not-yet** — coach-shaped and could fit, but the visible problem is *getting
+  clients*, not serving them (lead-gen funnels, discovery-call CTAs everywhere).
+  Re-engageable; tag it.
+- **fit** — lean-fit symptoms present (a program/delivery vehicle **and** a sign
+  of teachable method) and no hard stop.
+- **partial-fit** — knowledge + technique mixed, or only part of delivery is
+  text-serviceable. State the serviceable share.
+- **near-fit** — no hard stop, but the fit evidence isn't visible from what you
+  have. **Do not guess** — list the missing evidence (Step 3). Common and correct
+  from a bare bio; the link-dive resolves it.
 
-1. **C_private** — the account is private. Can't vet, can't warm-DM. Stop.
-   → reason `private`.
-2. **Offer gate (the central test).** Resolve what they sell into one of three
-   states:
-   - **Service-confirmed** (bio/comment/`offer_type` shows a done-with-you
-     offer) → passes, continue.
-   - **Product-only-confirmed** (positive evidence of merch / supplements /
-     self-guided course / ebook only, *no* service — usually from
-     `offer_type=product_only`, sometimes explicit in bio) → **D_fail**, reason
-     `no_serviceable_offer`. Stop.
-   - **Unconfirmed** (text is silent on offer type — the common case) → do NOT
-     reject; continue, but carry reason `offer_unconfirmed` and set
-     `needs_review`.
-3. **D_fail — other hard disqualifiers:** not selling anything at all
-   (`no_offer`); off-ICP niche like realtor / product brand / generic creator
-   (`off_niche`); mega/celebrity reach >~150k (`mega_reach`). Stop.
-4. **B_inactive** — otherwise a fit but last post is stale (>~90 days).
-   → reason `inactive`.
-5. **B_band_edge** — a fit, but follower count sits just outside the A sweet
-   spot (~1k–2k low or ~48k–150k high). → reason `band_edge`.
-6. **A_qualified** — public, active, service-confirmed (or unconfirmed but
-   otherwise strong), ~2k–48k followers, coaching/expert-adjacent niche.
-   → reason `qualified`. Proceed to Step 2.
+## Step 3 — Name the missing evidence (fit / partial / near)
 
-Note: a genuine fit that is simply **too small** (~sub-2k, even sub-1k) is no
-longer a reject — it stays a fit and is handled by **priority: Nurture** in
-Step 3, not D_fail.
+Whenever the deep tells aren't visible, list them instead of assuming — this is
+what the closer look (Firecrawl link read or human) must resolve:
+- a captured method clearing the ~10hr screen (docs / audio / course / session
+  archive);
+- a repeatable delivery vehicle;
+- the text-serviceable share (how much inbound is text, from the method, no live
+  context — vs. must-watch technique or getting-clients).
 
-## Step 2 — Assign the ICP flag (A_qualified only)
+## Step 4 — Output
 
-Only A_qualified profiles get an ICP flag; B/C/D leave it blank. Definitions and
-examples in `icp-flags.md`.
-
-- **P1_coach_expert** — sells knowledge/transformation as the core business.
-- **P2_adjacent** — adjacent service pro (photographer, designer, med-spa, etc.)
-  serving founders, with a service (not knowledge) as the core offer.
-- **P3_nonfit** — in-band and legit but off-niche for our offer.
-
-A profile that *looks* P1 but is confirmed product-only is still a **D_fail**
-(`no_serviceable_offer`), not a P1 — the offer gate wins over the niche read.
-
-## Step 3 — Assign priority (independent of tier)
-
-Priority is a separate axis from tier — it answers "how soon do we act?", not
-"are they a fit?". Default mapping (adjustable):
-
-- **High** — A_qualified, service-confirmed, active, P1/P2, sweet-spot size.
-- **Low** — B_band_edge (high side), P3-in-band, or any `offer_unconfirmed` fit.
-- **Nurture** — genuine fit but too small (~sub-2k) or inactive-but-good: keep
-  for later, don't reject, keep out of the active outreach queue.
-- **—** — C_private and D_fail carry no priority.
-
-## Step 4 — Produce the score block
-
-For a **single profile**, end with exactly this:
-
+Single profile:
 ```
-PROSPECT SCORE
---------------
-Handle:       @<username>
-Tier:         <A_qualified | B_band_edge | B_inactive | C_private | D_fail>
-Priority:     <High | Low | Nurture | —>
-ICP flag:     <P1_coach_expert | P2_adjacent | P3_nonfit | — (non-A)>
-Reason:       <reason_code> — <one-line explanation tied to the gate that fired>
-Needs review: <yes (why) | no>
+PROSPECT SCREEN
+Handle:      @<username>
+Screen:      fit | partial-fit | near-fit | not-yet | disqualified   (provisional)
+Fired:       <lean-fit and lean-disqualify indicators that actually fired>
+Missing:     <missing evidence, or "—" for a clean disqualified>
+Closer look: yes (what to check) | no
 ```
 
-`Needs review: yes` whenever the offer was `offer_unconfirmed`, or a
-text-invisible signal (visual lean, offer behind a link) could flip the call —
-these are the ones a human should eyeball before outreach.
-
-For a **batch**, produce a table (Handle, Tier, Priority, ICP, Reason, Review?)
-plus a tally at the top: count per tier, per priority, per ICP among A, and a
-count of `needs_review`. Flag any profile you scored against its mechanical
-flags in the Reason column so the call is auditable.
+Batch: a table (Handle, Screen, Fired, Missing) + tallies (count per verdict and a
+"closer look" count). Cite the **symptom** that drove each call — never a
+fundamentals essay.
 
 ## Guardrails
 
-- Score fit, don't editorialize. No outreach copy, no DM drafts.
-- Never reject on a silent bio. Absence of a visible offer is `offer_unconfirmed`
-  + `needs_review`, not `no_serviceable_offer`. Reject for product-only only on
-  positive evidence (ideally `offer_type`).
-- Mechanical flags are heuristics with false positives/negatives; the plain bio
-  and `offer_type` win. Note overrides in the Reason line.
-- Follower thresholds are soft edges, not bright lines. Use the band as a prior,
-  then adjust on niche, offer, and content quality.
-- Private is absolute: never anything but C_private.
-- When genuinely torn between two tiers, pick the lower and say why — don't
-  inflate the pipeline. When torn on the offer, prefer `offer_unconfirmed` +
-  `needs_review` over a hard reject.
+- **Symptoms, not the why.** Cite the indicator that fired.
+- **Hard stops stop; lean indicators tilt.** Socratic / regulated-case-specific /
+  must-watch-technique disqualify. Private / no-program / off-ICP / bespoke lean
+  disqualify but read the whole profile first.
+- **Talking-head video is fit, not a stop.** Only must-*watch* technique fails F2.
+- **Followers/engagement are never a criterion** — routing prior only.
+- **Never guess a missing fundamental** → near-fit + list what's missing. Never a
+  false disqualified. "Getting clients" is **not-yet**, not no.

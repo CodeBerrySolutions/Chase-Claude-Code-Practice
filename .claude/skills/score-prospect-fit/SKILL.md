@@ -1,6 +1,6 @@
 ---
 name: score-prospect-fit
-description: Screen a scraped coach/expert profile for Berry Nova ICP fit by recognizing observable symptoms — returns a screen verdict (fit / partial-fit / near-fit / disqualified), a door (overloaded / acquisition-mode / lead-starved), the indicators that fired, and any missing evidence. A symptom screen, not a diagnosis — it filters who gets a closer look; a human (or the sales-AI test suite) makes the real call. Does NOT scrape, DM, or write outreach copy. Trigger phrases -- "score these prospects", "screen this list", "which of these fit the ICP", "assess prospect fit", "which door".
+description: Screen a scraped coach/expert/consultant profile for Berry Nova ICP fit by recognizing observable symptoms — returns a screen verdict (fit / partial-fit / near-fit / not-yet / disqualified), the indicators that fired, and any missing evidence. A symptom screen, not a diagnosis — it filters who gets a closer look; a human makes the real call. Does NOT scrape, DM, or write outreach copy. Trigger phrases -- "score these prospects", "screen this list", "which of these fit the ICP", "assess prospect fit".
 ---
 
 # Score Prospect Fit
@@ -8,119 +8,109 @@ description: Screen a scraped coach/expert profile for Berry Nova ICP fit by rec
 **A symptom screen, not a diagnosis.** This skill is the *nurse*: it recognizes
 the outward **symptoms** of Berry Nova ICP fit on a scraped profile and flags who
 deserves a closer look. It does **not** reason about the underlying fundamentals
-(the *why*) — that is the *doctor's* job, captured in the canonical
-`Lead Qualification — ICP and Doors` doc (Google Drive). The skill tracks the
-**published v2**; the v3 draft (which would accept recorded client sessions as
-documented methodology) is not yet encoded.
-You screen; a human decides.
+(the *why*) — that is the *doctor's* job, captured in the canonical **Berry Nova
+ICP** doc (Google Drive). You screen; a human decides.
 
-Two rules from that doc that govern everything here:
-- **Indicators find, fundamentals decide.** These symptoms are Layer-2 heuristics
-  that *estimate* fit from the outside. They select who gets examined; they never
-  substitute for the fundamentals verdict.
-- **Never cross layers.** Follower count, engagement, and client counts are NOT
-  criteria. Using them to make a fit decision is the documented failure mode.
-  They may route *who gets looked at* — never the verdict.
+Governing rules from that doc: **indicators find, fundamentals decide** (these
+symptoms only estimate fit and select who gets examined), and **never cross
+layers** — follower count / engagement are not criteria, only routing priors.
 
 Screen-only. No outreach, no DMs, no drafting.
 
-## What Berry Nova needs (just enough to calibrate the screen)
+## What Berry Nova sells (just enough to calibrate the screen)
 
-Berry Nova is an AI operator that absorbs an expert's **between-session, text
-Q&A** from **existing clients of a repeatable program**, answered from the
-expert's **documented methodology**. So the symptoms worth screening for are the
-outward signs of: a repeatable delivery vehicle, a documented/cloneable method,
-text-answerable inbound, and being at/near capacity (not demand-starved). You
-don't assert those — you spot their tells.
+Berry Nova sells coaches/experts/consultants **their time back**: people with
+**their own method, delivered to real clients over and over, and drowning in the
+delivery**, whose knowledge **already lives in words** (written or recorded) so
+an AI can absorb it and hand back the hours they burn re-answering the same
+questions. **We do not sell leads.** So screen for the tells of: a repeatable
+practice on their own method, knowledge that survives as text, real
+hours-to-offload, and a method that's captured (or close).
 
-## Input
+## The four fundamentals (the *why* — for your calibration, not the output)
 
-- **A single profile** pasted inline, or
-- **A batch** — a CSV of scraped profiles (see `field-glossary.md`).
-- **When available**, the offer/content read from the link-in-bio (`offer_type`
-  + page text via `link-reader/`) and any content-modality signal. The richest
-  symptoms live behind the link, not in the 150-char bio.
+1. **A repeatable practice on their own method** — personally delivers ongoing
+   expertise in a repeating format (1:1 with patterns, group, cohort, community)
+   with a method compatible with an **answering** AI. Fails at two edges:
+   nothing repeats (fully custom consulting), or the method's real job is
+   something an answering AI can't do (works by *asking* questions / Socratic; a
+   regulated adviser whose clients need licensed answers). **Title alone doesn't
+   settle it** — a therapist running a non-clinical course can fit.
+2. **Knowledge that lives in words** — could a smart stranger learn it with eyes
+   closed? **Talking-head video counts** (value is in what's *said*). Must-watch
+   instruction (form checks, hands-on technique) does not. Knowledge fields fit,
+   technique fields don't; a mix is **partial-fit**.
+3. **Real hours to hand off** — weekly hours answering existing clients from the
+   method, no live context, in text. If the real problem is *getting* clients →
+   **not-yet**, not no. Count hours, not clients.
+4. **A method that is captured, or close** — exists in written docs, audio,
+   courses, or representative recorded sessions (~10hr screen; exportable).
 
 ## Step 1 — Screen for symptoms
 
-Read the whole profile (+ link content if present) and check it against the two
-symptom sets in `indicators.md` — read that file; it is the checklist. In brief:
+Read the whole profile (+ link content if present) against the two indicator sets
+in `indicators.md` (that file is the checklist). In brief:
 
-- **Fit-leaning symptoms** (raise fit): a named/trademarked method; a
-  book/course/workbook/written-curriculum/podcast catalog *about the method*; a
-  cohort / mentorship / paid community; capacity pressure ("fully booked",
-  waitlist, raising prices, application forms); complaints about DM volume /
-  repeat questions / late-night messages; a hired VA or community manager;
-  text-first deliverables.
-- **Non-fit-leaning symptoms** (lower fit; the starred ones are hard stops):
-  lead-gen funnels / "DM me to work together" / discovery-call CTAs ★; must-watch
-  demonstration content (form checks, demos, technique) ★; runs an agency /
-  scaled past personally delivering ★; Socratic / presence language ("holding
-  space", "I don't give answers") ★; regulated case-specific title (attorney,
-  therapist, clinical) ★; big audience with no program ★; voice-note-first norms;
-  "every engagement is bespoke" / pure B2B consulting (→ near-fit: check for a
-  repeatable subset); content locked in a closed coaching app.
+- **Lean fit:** a **bio promoting a real program with a link** to a site /
+  application / community (the fastest positive screen); a cohort / mentorship /
+  paid community; teachable material on their own method (named framework, book,
+  course, or a *teaching* podcast); text-first deliverables; overload signs
+  (waitlist, rising prices, booked calendar, VA hired to absorb messages).
+- **Lean disqualify:** no online presence; **private account or a bio that
+  doesn't promote a program**; promoting businesses **outside our ICP**; a
+  **highly bespoke/customized** approach. Plus the structural hard stops (★):
+  works-by-asking / Socratic; regulated case-specific; **must-watch technique**
+  (form checks, hands-on) — but **not** talking-head video.
 
-## Step 2 — Assign a door (capacity read)
+## Step 2 — Screen verdict
 
-From the capacity symptoms (`doors.md`):
-- **overloaded** — at/past capacity ("fully booked", waitlist, throttling). The headline fit.
-- **acquisition-mode** — climbing toward capacity. Fit.
-- **lead-starved** — demand-constrained (lead-gen CTAs, discovery-call funnels).
-  Disqualified *for now* — re-engageable, not "never".
-
-## Step 3 — Screen verdict
-
-Mirror the doc's verdicts, but mark them **provisional** (a screen, not a ruling):
-
-- **disqualified** — a **hard-stop** non-fit symptom fired (must-watch content,
-  Socratic/presence, regulated case-specific, agency/scaled-past-delivering,
-  big-audience-no-program), **or** lead-starved. Name the symptom. (lead-starved
-  → tag re-engageable.) Note: bespoke/consulting is **not** a hard stop → near-fit,
-  check for a repeatable subset.
-- **fit** — fit-leaning symptoms present (a delivery vehicle **and** some sign of
-  documented method) and no hard stop.
-- **partial-fit** — signs that only *part* of delivery is text-serviceable (e.g.
-  written Q&A plus heavy video/technique). Note the serviceable share.
+- **disqualified** — a structural hard stop fired (Socratic/asking, regulated
+  case-specific, must-watch technique), **or** the lean-disqualify indicators
+  clearly hold (private / no program promoted / off-ICP / fully bespoke). Name it.
+- **not-yet** — coach-shaped and could fit, but the visible problem is *getting
+  clients*, not serving them (lead-gen funnels, discovery-call CTAs everywhere).
+  Re-engageable; tag it.
+- **fit** — lean-fit symptoms present (a program/delivery vehicle **and** a sign
+  of teachable method) and no hard stop.
+- **partial-fit** — knowledge + technique mixed, or only part of delivery is
+  text-serviceable. State the serviceable share.
 - **near-fit** — no hard stop, but the fit evidence isn't visible from what you
-  have. **Do not guess** — list the missing evidence (Step 4). This is the
-  common outcome from a bare profile, and it is the correct one.
+  have. **Do not guess** — list the missing evidence (Step 3). Common and correct
+  from a bare bio; the link-dive resolves it.
 
-## Step 4 — Name the missing evidence (for fit / partial / near)
+## Step 3 — Name the missing evidence (fit / partial / near)
 
-The deep tells usually aren't visible in a scrape. Whenever they're unconfirmed,
-list them plainly rather than assuming — this is what the closer look (link read
-or human) must resolve:
-- a documentation source clearing the ~10hr floor (course, manual, audio, or a
-  representative session-recording archive);
-- the delivery format (is there a repeatable vehicle?);
-- the text-serviceable share of inbound (how much is text and answerable from the
-  method vs. video / voice / live-situational).
+Whenever the deep tells aren't visible, list them instead of assuming — this is
+what the closer look (Firecrawl link read or human) must resolve:
+- a captured method clearing the ~10hr screen (docs / audio / course / session
+  archive);
+- a repeatable delivery vehicle;
+- the text-serviceable share (how much inbound is text, from the method, no live
+  context — vs. must-watch technique or getting-clients).
 
-## Step 5 — Output
+## Step 4 — Output
 
 Single profile:
 ```
 PROSPECT SCREEN
-Handle:        @<username>
-Screen:        fit | partial-fit | near-fit | disqualified   (provisional)
-Door:          overloaded | acquisition-mode | lead-starved | —
-Fired:         <fit-leaning and non-fit-leaning symptoms that actually fired>
-Missing:       <missing evidence, or "—" for a clean disqualified>
-Closer look:   yes (what to check) | no
+Handle:      @<username>
+Screen:      fit | partial-fit | near-fit | not-yet | disqualified   (provisional)
+Fired:       <lean-fit and lean-disqualify indicators that actually fired>
+Missing:     <missing evidence, or "—" for a clean disqualified>
+Closer look: yes (what to check) | no
 ```
 
-Batch: a table (Handle, Screen, Door, Fired, Missing) + tallies (count per screen
-verdict, per door, and a "closer look" count). Cite the *symptom* that drove each
-call — never a fundamentals essay.
+Batch: a table (Handle, Screen, Fired, Missing) + tallies (count per verdict and a
+"closer look" count). Cite the **symptom** that drove each call — never a
+fundamentals essay.
 
 ## Guardrails
 
-- **Symptoms, not the why.** Cite the indicator that fired; don't write the
-  pathophysiology. The doctor's reasoning stays in the Drive doc.
-- **Hard stops stop; soft symptoms tilt.** A single must-watch / Socratic /
-  regulated-case-specific tell disqualifies. Soft indicators only lean.
-- **Followers/engagement are never a criterion** — only a routing prior.
-- **Never guess a missing fundamental.** If the fit evidence isn't visible →
-  near-fit + list what's missing. Never a false disqualified.
-- **lead-starved is "not yet," not "never."** Tag it re-engageable.
+- **Symptoms, not the why.** Cite the indicator that fired.
+- **Hard stops stop; lean indicators tilt.** Socratic / regulated-case-specific /
+  must-watch-technique disqualify. Private / no-program / off-ICP / bespoke lean
+  disqualify but read the whole profile first.
+- **Talking-head video is fit, not a stop.** Only must-*watch* technique fails F2.
+- **Followers/engagement are never a criterion** — routing prior only.
+- **Never guess a missing fundamental** → near-fit + list what's missing. Never a
+  false disqualified. "Getting clients" is **not-yet**, not no.

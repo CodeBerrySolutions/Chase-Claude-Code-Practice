@@ -20,12 +20,12 @@ engagers. Columns, in the order the pilot export used them:
 | `has_linkhub` | Linktree/Stan/Beacons-style hub detected | Weak corroboration; common for coaches. |
 | `bio_offer` | Heuristic: bio contains an offer/CTA | Strong signal but **noisy** — misses soft CTAs ("Download the method"). Confirm against the bio. |
 | `offer_type` | (scraper) What the person sells, read from their link-in-bio | Feeds the offer symptoms (`indicators.md`): `service`/`mixed` → the **delivery-vehicle** fit symptom; `product_only` → the **passive-product / no-vehicle** non-fit; `unknown` → **near-fit** (missing evidence). See `input-contract.md`. Absent → infer from bio, default near-fit. |
-| `overwhelm` | Heuristic: bio speaks to burnout/overwhelm themes | Weak proxy for capacity pressure (door read); never a verdict. |
+| `overwhelm` | Heuristic: bio speaks to burnout/overwhelm themes | Weak proxy for an overload sign [F3]; never a verdict. |
 | `tier` | (pilot output) legacy tier | Old band-based label; **ignore for screening** — kept only to compare against the new symptom screen. |
 | `seeds` | Which seed account(s) this engager came from | `amy` / `james` / `jasmine`. Provenance; a very on-topic peer-level comment is a mild positive. |
 | `source_types` | How they surfaced | `organic` / `keyword_bait` / `personal`. Context for comment quality. |
 | `best_comment` | Their comment on the seed's post | A substantive, peer-level comment leans expert; "🔥🔥🔥" / "Training" leans low-intent fan. |
-| `icp_flag` | (pilot output) legacy sub-flag | Superseded by the screen verdict + door (`doors.md`). Ignore for screening. |
+| `icp_flag` | (pilot output) legacy sub-flag | Superseded by the screen verdict. Ignore for screening. |
 
 ## Signals that are load-bearing vs. decorative
 

@@ -1,66 +1,60 @@
 # Indicators — the symptom checklist
 
-The nurse's screen. These are **Layer-2 external indicators** from the canonical
-`Lead Qualification — ICP and Doors` doc (Drive) — observable symptoms that
-*estimate* fit from the outside. The bracketed `[F#]` tag is the fundamental each
-symptom is a proxy for; it's there so a human can trace symptom → cause in the
-doc. **You screen on the symptom; you never assert the [F#].**
+The nurse's screen. **Layer-2 external indicators** from the canonical **Berry
+Nova ICP** doc (Drive) — observable symptoms that *estimate* fit. The bracketed
+`[F#]` is the fundamental each is a proxy for (F1 repeatable practice on own
+method · F2 knowledge in words · F3 real hours · F4 method captured); it's there
+so a human can trace symptom → cause. **You screen on the symptom; you never
+assert the [F#].** No single indicator decides — indicators select who gets a
+closer look; the fundamentals (doctor + doc) decide.
 
-No single indicator decides anything. Indicators select who gets a closer look;
-the fundamentals (doctor + Drive doc) decide the verdict.
+## Lean-fit symptoms
 
-## Fit-leaning symptoms (raise fit)
-
-| Symptom (what you can observe) | Proxy for |
+| Symptom (observable) | Proxy for |
 |---|---|
-| Named / trademarked methodology in bio or content — "The X Method", "Rebuild Protocol" | [F4 distinctive] |
-| Book, structured course, workbook, written curriculum, or a podcast back-catalog **about their method** | [F4 volume] |
-| Runs a **cohort, mentorship, or paid community** (Skool, Circle, alumni group) | [F1 delivery vehicle] |
-| "Fully booked", waitlist, "not taking new clients", turning people away | [door: overloaded] |
-| Complains about DM volume / answering the same questions / 11pm or weekend messages | [F3 offloadable hours] |
-| Has hired or tried a **VA or community manager** (already paying to offload) | [F3] |
-| Sells **text-first** deliverables: frameworks, templates, written curricula | [F3b text-serviceable] |
-| Raising prices or adding application forms to throttle demand | [door: overloaded] |
+| **Bio promotes a real program with a link** to a site, application, or community — *the fastest positive screen* | [F1] |
+| Runs a **cohort, mentorship, or paid community** | [F1] |
+| **Teachable material on their own method**: a named framework, book, course, or a podcast that *teaches* (not interviews) | [F4 captured] |
+| **Text-first deliverables**: frameworks, templates, written curricula | [F2 / F3b text] |
+| **Overload signs**: waitlist, rising prices, a booked calendar, a VA hired to absorb messages | [F3 — hours to hand off] |
 
-## Non-fit-leaning symptoms (lower fit)
+## Lean-disqualify symptoms
 
-★ = **hard stop**: if this fires, screen = disqualified (name it).
+★ = **structural hard stop** — if this fires, screen = disqualified (name it).
+The unstarred ones lean disqualify; read the whole profile before ruling.
 
 | Symptom | Proxy for | Hard stop |
 |---|---|---|
-| Lead-gen funnel: "DM me to work together", free-discovery-call CTAs everywhere, lead-magnet-heavy, asks about lead tools | [F2 lead-starved] | ★ (→ door: lead-starved, re-engageable) |
-| **Demonstration/must-watch content**: form checks, exercise demos, hands-on technique | [F4b visual; F3b video inbound] | ★ |
-| Voice-note-first community norms | [F3b — shrinks serviceable share] | — (tilts; note it) |
-| "Every engagement is custom/bespoke", pure B2B consulting language | [F1 — check for a repeatable subset] | — (→ near-fit: does a repeatable slice exist?) |
-| Runs an **agency** / scaled past personally delivering a repeatable program | [F1 — not the expert delivering] | ★ |
-| Socratic / presence language: "holding space", "I ask, I don't answer" | [F5a method mismatch] | ★ |
-| Regulated title needing case-specific advice: attorney, therapist, clinical practice | [F5b ceiling] | ★ |
-| Big audience, **no program / nothing to deliver** | [F1; follower volume is never a criterion] | ★ |
-| Content lives only inside a closed coaching app (e.g. TrueCoach) | [F4c — blocker, not permanent] | — (blocker; near-fit + note) |
+| **No online presence** | (nothing to screen / no program) | — (lean DQ) |
+| **Private account, or the bio doesn't promote a program** | [F1 — no visible vehicle] | — (lean DQ) |
+| Uses social media to **promote businesses outside our ICP** (realtor, product brand, etc.) | (off-ICP) | — (lean DQ) |
+| **Highly bespoke / customized** approach — nothing repeatable | [F1 — nothing to clone] | — (lean DQ; fully-custom = DQ) |
+| **Works by asking questions / Socratic**, "I don't give answers", "holding space" | [F1 — method the AI can't do] | ★ |
+| **Regulated title needing case-specific advice** (clients need licensed answers) | [F1 — ceiling] | ★ |
+| **Must-watch technique**: form checks, hands-on demos, anything you must *watch* | [F2 — dies in transcription] | ★ |
+
+**Not a disqualifier:** talking-head video (value is in what's *said*), a coach
+who happens to post reels, or a bare "consultant" title (consulting ≠ fully
+bespoke — check for a repeatable slice → near-fit, not a hard stop).
 
 ## Screening logic
 
-1. **Any hard-stop (★) symptom fired?** → **disqualified**, name it. (lead-starved
-   → tag re-engageable.) Hard stops win over any number of fit-leaning symptoms.
-2. **Else, fit-leaning symptoms present, including a delivery-vehicle tell (cohort
-   / mentorship / community / 1:1-with-patterns) AND a documented-method tell
-   (named method / book / course / session library)?** → **fit**. Assign door.
-3. **Else, signs that only part of delivery is text-serviceable** (some written
-   Q&A + heavy video/technique) → **partial-fit**; state the serviceable share.
-4. **Else** (a coach-shaped account but the delivery-vehicle and/or method tells
-   aren't visible) → **near-fit**; list the missing evidence. This is the normal
-   outcome for a bare bio and is correct — don't inflate it to fit.
+1. **A structural hard stop (★) fired?** → **disqualified**, name it. Hard stops
+   win over any number of lean-fit symptoms.
+2. **The visible problem is getting clients** (lead-gen funnels, discovery-call
+   CTAs everywhere), not serving them? → **not-yet** (re-engageable). [F3]
+3. **Lean-fit present — a program/vehicle tell AND a teachable-method tell — and
+   no hard stop?** → **fit**.
+4. **Knowledge + technique mixed, or only part is text-serviceable?** →
+   **partial-fit**; state the serviceable share.
+5. **Lean-disqualify indicators clearly hold** (private / no program in bio /
+   off-ICP / fully bespoke) and nothing offsets them? → **disqualified**.
+6. **Else** (coach-shaped, no hard stop, but the vehicle/method tells aren't
+   visible) → **near-fit**; list the missing evidence. Normal for a bare bio; the
+   Firecrawl link-dive resolves it. Don't inflate to fit.
 
 ## What is NOT an indicator
 
-- **Follower count / engagement / client count.** Never a criterion — a routing
-  prior at most. A 2k account and a 200k account screen the same on symptoms.
-- **Recency of posting, verified badge, business-account flag.** Context only.
-
-## Calibration note
-
-Client-to-follower ratios vary by sector and platform; expressed pain
-over-samples people with time to post (the most overloaded are too busy to post
-about it). Treat all indicators as weak priors until per-sector data exists. When
-symptoms conflict or are thin, prefer **near-fit + missing evidence** over a
-confident call.
+- **Follower count / engagement / client count** — never a criterion; a routing
+  prior at most. A 2k and a 200k account screen the same on symptoms.
+- **Verified badge, business-account flag, posting recency** — context only.

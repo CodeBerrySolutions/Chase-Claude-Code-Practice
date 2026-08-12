@@ -19,7 +19,7 @@ engagers. Columns, in the order the pilot export used them:
 | `has_commerce` | Shop/commerce link detected | Weak corroboration of a real business. |
 | `has_linkhub` | Linktree/Stan/Beacons-style hub detected | Weak corroboration; common for coaches. |
 | `bio_offer` | Heuristic: bio contains an offer/CTA | Strong signal but **noisy** — misses soft CTAs ("Download the method"). Confirm against the bio. |
-| `offer_type` | (scraper) What the person sells, read from their link-in-bio | Feeds the offer symptoms (`indicators.md`): `service`/`mixed` → the **delivery-vehicle** fit symptom; `product_only` → the **passive-product / no-vehicle** non-fit; `unknown` → **near-fit** (missing evidence). See `input-contract.md`. Absent → infer from bio, default near-fit. |
+| `offer_type` | (scraper) What the person sells, read from their link-in-bio | Feeds the offer symptoms (`indicators.md`): `service`/`mixed` → the **delivery-vehicle** fit symptom; `product_only` → the **passive-product / no-vehicle** non-fit; `unknown` → **review** (missing evidence). See `input-contract.md`. Absent → infer from bio, default review. |
 | `overwhelm` | Heuristic: bio speaks to burnout/overwhelm themes | Weak proxy for an overload sign [F3]; never a verdict. |
 | `tier` | (pilot output) legacy tier | Old band-based label; **ignore for screening** — kept only to compare against the new symptom screen. |
 | `seeds` | Which seed account(s) this engager came from | `amy` / `james` / `jasmine`. Provenance; a very on-topic peer-level comment is a mild positive. |
@@ -48,7 +48,7 @@ automated fetches; web fetch is blocked here). Consequences:
   (`input-contract.md`).
 - Visual lean is invisible: someone whose bio says "coach" but whose feed is all
   hands-on training can look fine from text alone. When a text-invisible symptom
-  could flip the call, screen **near-fit** and flag the closer look — don't guess.
+  could flip the call, screen **review** and flag the closer look — don't guess.
 
 Never treat a silent bio as a hard stop — absence of visible tells is
-**near-fit + missing evidence**, not a disqualified.
+**review + missing evidence**, not a `no`.

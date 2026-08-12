@@ -51,7 +51,7 @@ b. **Methodology gate:** Is their coaching methodology documented in written or 
 
 End the section with a verdict line:
 
-**Verdict:** `still-fit` / `downgraded-to-near-fit` / `disqualified` — with the quote that triggered any downgrade or disqualification.
+**Verdict:** `still-fit` / `downgraded-to-review` / `no` — with the quote that triggered any downgrade or disqualification. (Mirrors the `score-prospect-fit` taxonomy: fit / review / later / no.)
 
 If a disqualifier surfaced, make it impossible to miss: lead the section with **FLAG:** and the triggering quote.
 
@@ -59,7 +59,7 @@ If a disqualifier surfaced, make it impossible to miss: lead the section with **
 
 Always end the output with a single line:
 
-**NEXT MOVE:** one concrete action — e.g. "send founding-offer follow-up", "park — disqualified", "second call needed on methodology documentation".
+**NEXT MOVE:** one concrete action — e.g. "send founding-offer follow-up", "park — no fit", "second call needed on methodology documentation".
 
 ## Worked example (condensed)
 

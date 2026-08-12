@@ -20,7 +20,7 @@ closer look; the fundamentals (doctor + doc) decide.
 
 ## Lean-disqualify symptoms
 
-★ = **structural hard stop** — if this fires, screen = disqualified (name it).
+★ = **structural hard stop** — if this fires, screen = **no** (name it).
 The unstarred ones lean disqualify; read the whole profile before ruling.
 
 | Symptom | Proxy for | Hard stop |
@@ -35,34 +35,35 @@ The unstarred ones lean disqualify; read the whole profile before ruling.
 
 **Not a disqualifier:** talking-head video (value is in what's *said*), a coach
 who happens to post reels, or a bare "consultant" title (consulting ≠ fully
-bespoke — check for a repeatable slice → near-fit, not a hard stop).
+bespoke — check for a repeatable slice → review, not a hard stop).
 
 ## Screening logic
 
-> **Thin-content precedence (the load-bearing rule).** `disqualified` REQUIRES a
-> positive signal: a structural hard stop (★) *or* a clearly off-ICP business.
-> **Absence of evidence is not disqualifying.** When the link-in-bio comes back
-> empty, blocked, broken, or thin, treat the program/method tells as
-> *unverified, not absent* → **near-fit**, list what's missing. Never cut a
-> coach-shaped bio to `disqualified` just because the offer isn't visible — that
-> is the single most common screen error, and the Firecrawl link-dive exists to
-> resolve it.
+The four verdicts are **fit / review / later / no**, each mapped to a human
+action: fit → outreach · review → your triage · later → nurture · no → drop.
 
-1. **A structural hard stop (★) fired?** → **disqualified**, name it. Hard stops
-   win over any number of lean-fit symptoms.
-2. **The visible problem is getting clients** (lead-gen funnels, discovery-call
-   CTAs everywhere), not serving them? → **not-yet** (re-engageable). [F3]
+> **Thin-content precedence (the load-bearing rule).** `no` REQUIRES a positive
+> signal: a structural hard stop (★) *or* a clearly off-ICP business. **Absence
+> of evidence is not disqualifying.** When the link-in-bio comes back empty,
+> blocked, broken, or thin, treat the program/method tells as *unverified, not
+> absent* → **review**, list what's missing. Never cut a coach-shaped bio to `no`
+> just because the offer isn't visible — that is the single most common screen
+> error, and the Firecrawl link-dive exists to resolve it.
+
+1. **A structural hard stop (★) fired?** → **no**, name it. Hard stops win over
+   any number of lean-fit symptoms.
+2. **A clearly off-ICP business, or a fully-bespoke approach, is what's visible?**
+   → **no**. (A *private* account or a *silent* offer is NOT this — see the
+   thin-content rule; those are `review`.)
 3. **Lean-fit present — a program/vehicle tell AND a teachable-method tell — and
    no hard stop?** → **fit**.
-4. **Knowledge + technique mixed, or only part is text-serviceable?** →
-   **partial-fit**; state the serviceable share.
-5. **A clearly off-ICP business, or a fully-bespoke approach, is what's visible?**
-   → **disqualified**. (A *private* account or a *silent* offer is NOT this — see
-   the thin-content rule; those are near-fit.)
-6. **Else** (coach-shaped, no hard stop, but the vehicle/method tells aren't
-   visible) → **near-fit**; list the missing evidence. Normal for a bare bio or a
-   thin/blocked link; the Firecrawl link-dive resolves it. Don't inflate to fit,
-   and don't collapse to disqualified.
+4. **The visible problem is getting clients** (lead-gen funnels, discovery-call
+   CTAs everywhere), not serving them? → **later** (re-engageable). [F3]
+5. **Else** — coach-shaped, no hard stop, but either knowledge + technique are
+   **mixed** (state the serviceable share) or the vehicle/method tells **aren't
+   visible** (thin/blocked link, bare bio) → **review**; list the missing
+   evidence. The common, correct outcome. Don't inflate to fit, don't collapse
+   to no. This is the pile a human triages.
 
 ## What is NOT an indicator
 

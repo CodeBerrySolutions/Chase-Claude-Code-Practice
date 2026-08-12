@@ -24,9 +24,9 @@ flowchart TD
   B --> C[Split into items]
   C --> D[Firecrawl scrape<br/>link-in-bio → page text]
   D --> E[LLM extract<br/>bio + page text → symptoms JSON<br/>system prompt = SKILL.md+indicators.md]
-  E --> F[Code: apply screen logic<br/>hard-stops→disqualified, verdict]
+  E --> F[Code: apply screen logic<br/>hard-stops/off-ICP→no, verdict]
   F --> G[Upsert result<br/>Supabase prospects table]
-  G --> H[Slack digest<br/>fits / near-fits needing a closer look]
+  G --> H[Slack digest<br/>fits + review pile needing a closer look]
   H --> I{Human review}
   I -->|decision| J[Write decision back<br/>Supabase + calibration-examples.md]
 ```
@@ -55,9 +55,9 @@ exist are named below.
    screen, missing[], closer_look, evidence}`.
 6. **Code — apply screen logic** (`n8n-nodes-base.code`, no network needed):
    deterministically compute the final `screen` from the fired
-   symptoms per `indicators.md` (any hard-stop → disqualified; vehicle+method →
-   fit; else near-fit + missing). Keeps the verdict auditable instead of trusting
-   the LLM wholesale.
+   symptoms per `indicators.md` (any hard-stop/off-ICP → no; vehicle+method →
+   fit; getting-clients → later; else review + missing). Keeps the verdict
+   auditable instead of trusting the LLM wholesale.
 7. **Upsert result** — Supabase (`Supabase BerryNova` = `ijkq6ICLcKv8Fiyi`) or
    Sheets `appendOrUpdate` (dedup by `username`).
 8. **Slack digest** — `Slack · message post` (cred `Slack BerryNova` =

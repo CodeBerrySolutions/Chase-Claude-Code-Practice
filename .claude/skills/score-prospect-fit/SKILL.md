@@ -1,6 +1,6 @@
 ---
 name: score-prospect-fit
-description: Screen a scraped coach/expert/consultant profile for Berry Nova ICP fit by recognizing observable symptoms — returns a screen verdict (fit / partial-fit / near-fit / not-yet / disqualified), the indicators that fired, and any missing evidence. A symptom screen, not a diagnosis — it filters who gets a closer look; a human makes the real call. Does NOT scrape, DM, or write outreach copy. Trigger phrases -- "score these prospects", "screen this list", "which of these fit the ICP", "assess prospect fit".
+description: Screen a scraped coach/expert/consultant profile for Berry Nova ICP fit by recognizing observable symptoms — returns a screen verdict (fit / review / later / no), the indicators that fired, and any missing evidence. A symptom screen, not a diagnosis — it filters who gets a closer look; a human makes the real call. Does NOT scrape, DM, or write outreach copy. Trigger phrases -- "score these prospects", "screen this list", "which of these fit the ICP", "assess prospect fit".
 ---
 
 # Score Prospect Fit
@@ -39,10 +39,10 @@ hours-to-offload, and a method that's captured (or close).
 2. **Knowledge that lives in words** — could a smart stranger learn it with eyes
    closed? **Talking-head video counts** (value is in what's *said*). Must-watch
    instruction (form checks, hands-on technique) does not. Knowledge fields fit,
-   technique fields don't; a mix is **partial-fit**.
+   technique fields don't; a mix is **review**.
 3. **Real hours to hand off** — weekly hours answering existing clients from the
    method, no live context, in text. If the real problem is *getting* clients →
-   **not-yet**, not no. Count hours, not clients.
+   **later**, not no. Count hours, not clients.
 4. **A method that is captured, or close** — exists in written docs, audio,
    courses, or representative recorded sessions (~10hr screen; exportable).
 
@@ -65,23 +65,26 @@ in `indicators.md` (that file is the checklist). In brief:
 
 ## Step 2 — Screen verdict
 
-- **disqualified** — REQUIRES a positive signal: a structural hard stop fired
+Four verdicts, each mapped to what a human does with it:
+
+- **fit** → *outreach queue.* Lean-fit symptoms present (a program / delivery
+  vehicle **and** a sign of teachable method) and no hard stop. A clean yes.
+- **review** → *needs your attention* (the biggest actionable pile). Coach-shaped,
+  no hard stop, but the skill can't confidently call it — either because knowledge
+  + technique are **mixed** (only part is text-serviceable — state the share), or
+  because the fit tells **aren't visible** from what you have (thin/blocked link,
+  bare bio). **Do not guess** — list the missing evidence (Step 3). A silent or
+  thin offer lands here, never in `no`.
+- **later** → *nurture / re-engage.* A real coach who could fit, but the visible
+  problem is *getting clients*, not serving them (lead-gen funnels, discovery-call
+  CTAs everywhere). Not the pain we remove — yet. Park and revisit; don't spend a
+  closer look now.
+- **no** → *drop.* REQUIRES a positive signal: a structural hard stop fired
   (Socratic/asking, regulated case-specific, must-watch technique), **or** a
   clearly off-ICP business / fully-bespoke approach is what's visible. Name it.
-  **A silent or thin offer is never disqualified** — a coach-shaped bio with no
-  visible program is **near-fit** (unverified, not absent), not a cut.
-- **not-yet** — coach-shaped and could fit, but the visible problem is *getting
-  clients*, not serving them (lead-gen funnels, discovery-call CTAs everywhere).
-  Re-engageable; tag it.
-- **fit** — lean-fit symptoms present (a program/delivery vehicle **and** a sign
-  of teachable method) and no hard stop.
-- **partial-fit** — knowledge + technique mixed, or only part of delivery is
-  text-serviceable. State the serviceable share.
-- **near-fit** — no hard stop, but the fit evidence isn't visible from what you
-  have. **Do not guess** — list the missing evidence (Step 3). Common and correct
-  from a bare bio; the link-dive resolves it.
+  **Absence of a visible offer is never `no`** — that's `review`.
 
-## Step 3 — Name the missing evidence (fit / partial / near)
+## Step 3 — Name the missing evidence (fit / review)
 
 Whenever the deep tells aren't visible, list them instead of assuming — this is
 what the closer look (Firecrawl link read or human) must resolve:
@@ -97,23 +100,24 @@ Single profile:
 ```
 PROSPECT SCREEN
 Handle:      @<username>
-Screen:      fit | partial-fit | near-fit | not-yet | disqualified   (provisional)
+Screen:      fit | review | later | no   (provisional)
 Fired:       <lean-fit and lean-disqualify indicators that actually fired>
-Missing:     <missing evidence, or "—" for a clean disqualified>
+Missing:     <missing evidence, or "—" for a clean no>
 Closer look: yes (what to check) | no
 ```
 
 Batch: a table (Handle, Screen, Fired, Missing) + tallies (count per verdict and a
 "closer look" count). Cite the **symptom** that drove each call — never a
-fundamentals essay.
+fundamentals essay. Note `review` will usually be the largest bucket — that's by
+design; it's the set a human triages.
 
 ## Guardrails
 
 - **Symptoms, not the why.** Cite the indicator that fired.
 - **Hard stops stop; lean indicators tilt.** Socratic / regulated-case-specific /
-  must-watch-technique disqualify. Private / no-program / off-ICP / bespoke lean
-  disqualify but read the whole profile first.
+  must-watch-technique → `no`. Off-ICP / fully-bespoke lean toward `no` but read
+  the whole profile first. Private/silent offer is **not** a `no`.
 - **Talking-head video is fit, not a stop.** Only must-*watch* technique fails F2.
 - **Followers/engagement are never a criterion** — routing prior only.
-- **Never guess a missing fundamental** → near-fit + list what's missing. Never a
-  false disqualified. "Getting clients" is **not-yet**, not no.
+- **Never guess a missing fundamental** → `review` + list what's missing. Never a
+  false `no`. "Getting clients" is **later**, not no.

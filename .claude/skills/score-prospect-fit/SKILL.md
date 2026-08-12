@@ -56,17 +56,20 @@ in `indicators.md` (that file is the checklist). In brief:
   paid community; teachable material on their own method (named framework, book,
   course, or a *teaching* podcast); text-first deliverables; overload signs
   (waitlist, rising prices, booked calendar, VA hired to absorb messages).
-- **Lean disqualify:** no online presence; **private account or a bio that
-  doesn't promote a program**; promoting businesses **outside our ICP**; a
+- **Lean disqualify:** no online presence; **private account** (can't see
+  content); promoting a business **clearly outside our ICP** (realtor, designer
+  selling design, retail/product brand, performed craft sold to end clients); a
   **highly bespoke/customized** approach. Plus the structural hard stops (★):
   works-by-asking / Socratic; regulated case-specific; **must-watch technique**
   (form checks, hands-on) — but **not** talking-head video.
 
 ## Step 2 — Screen verdict
 
-- **disqualified** — a structural hard stop fired (Socratic/asking, regulated
-  case-specific, must-watch technique), **or** the lean-disqualify indicators
-  clearly hold (private / no program promoted / off-ICP / fully bespoke). Name it.
+- **disqualified** — REQUIRES a positive signal: a structural hard stop fired
+  (Socratic/asking, regulated case-specific, must-watch technique), **or** a
+  clearly off-ICP business / fully-bespoke approach is what's visible. Name it.
+  **A silent or thin offer is never disqualified** — a coach-shaped bio with no
+  visible program is **near-fit** (unverified, not absent), not a cut.
 - **not-yet** — coach-shaped and could fit, but the visible problem is *getting
   clients*, not serving them (lead-gen funnels, discovery-call CTAs everywhere).
   Re-engageable; tag it.

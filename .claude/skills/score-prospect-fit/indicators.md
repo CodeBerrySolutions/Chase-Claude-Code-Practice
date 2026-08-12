@@ -26,8 +26,8 @@ The unstarred ones lean disqualify; read the whole profile before ruling.
 | Symptom | Proxy for | Hard stop |
 |---|---|---|
 | **No online presence** | (nothing to screen / no program) | — (lean DQ) |
-| **Private account, or the bio doesn't promote a program** | [F1 — no visible vehicle] | — (lean DQ) |
-| Uses social media to **promote businesses outside our ICP** (realtor, product brand, etc.) | (off-ICP) | — (lean DQ) |
+| **Private account** — content can't be seen to screen | [F1 — no visible vehicle] | — (lean DQ; screen from bio or skip) |
+| Uses social media to **promote a business clearly outside our ICP** (realtor, interior/graphic designer selling design, retail/product brand, restaurant, performed-craft service sold to end clients) | (off-ICP) | — (lean DQ) |
 | **Highly bespoke / customized** approach — nothing repeatable | [F1 — nothing to clone] | — (lean DQ; fully-custom = DQ) |
 | **Works by asking questions / Socratic**, "I don't give answers", "holding space" | [F1 — method the AI can't do] | ★ |
 | **Regulated title needing case-specific advice** (clients need licensed answers) | [F1 — ceiling] | ★ |
@@ -39,6 +39,15 @@ bespoke — check for a repeatable slice → near-fit, not a hard stop).
 
 ## Screening logic
 
+> **Thin-content precedence (the load-bearing rule).** `disqualified` REQUIRES a
+> positive signal: a structural hard stop (★) *or* a clearly off-ICP business.
+> **Absence of evidence is not disqualifying.** When the link-in-bio comes back
+> empty, blocked, broken, or thin, treat the program/method tells as
+> *unverified, not absent* → **near-fit**, list what's missing. Never cut a
+> coach-shaped bio to `disqualified` just because the offer isn't visible — that
+> is the single most common screen error, and the Firecrawl link-dive exists to
+> resolve it.
+
 1. **A structural hard stop (★) fired?** → **disqualified**, name it. Hard stops
    win over any number of lean-fit symptoms.
 2. **The visible problem is getting clients** (lead-gen funnels, discovery-call
@@ -47,11 +56,13 @@ bespoke — check for a repeatable slice → near-fit, not a hard stop).
    no hard stop?** → **fit**.
 4. **Knowledge + technique mixed, or only part is text-serviceable?** →
    **partial-fit**; state the serviceable share.
-5. **Lean-disqualify indicators clearly hold** (private / no program in bio /
-   off-ICP / fully bespoke) and nothing offsets them? → **disqualified**.
+5. **A clearly off-ICP business, or a fully-bespoke approach, is what's visible?**
+   → **disqualified**. (A *private* account or a *silent* offer is NOT this — see
+   the thin-content rule; those are near-fit.)
 6. **Else** (coach-shaped, no hard stop, but the vehicle/method tells aren't
-   visible) → **near-fit**; list the missing evidence. Normal for a bare bio; the
-   Firecrawl link-dive resolves it. Don't inflate to fit.
+   visible) → **near-fit**; list the missing evidence. Normal for a bare bio or a
+   thin/blocked link; the Firecrawl link-dive resolves it. Don't inflate to fit,
+   and don't collapse to disqualified.
 
 ## What is NOT an indicator
 

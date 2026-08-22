@@ -7,7 +7,7 @@ engagers. Columns, in the order the pilot export used them:
 |---|---|---|
 | `username` | Instagram handle | The `@` identity; use in output. |
 | `full_name` | Display name | Often carries the niche ("… \| Business Coach"). Read it. |
-| `followers` | Follower count | **Routing prior only — never a fit criterion** (`indicators.md`). Ignore the old band thresholds; a 2k and a 200k account screen the same on symptoms. |
+| `followers` | Follower count | **A weak proxy for demand [F5], read only with demand evidence — never alone, never a fixed threshold** (ruling 2026-08-20, `indicators.md`). Low reach *with* a waitlist / reviews / off-platform clients still fits; low reach *with none* → `later`/`no`. Ignore the old band thresholds; the floor varies by niche. |
 | `private` | Account is private | Can't see content to screen → screen from bio alone or skip; not a verdict by itself. |
 | `verified` | Blue check | Weak signal only. Not required for A; common on mega D_fail too. |
 | `is_business` | IG business/creator account | Weak signal. Not decisive. |
@@ -32,9 +32,12 @@ engagers. Columns, in the order the pilot export used them:
 - **Load-bearing (symptom sources):** the **bio** and, when present, the
   **link-in-bio content / `offer_type`** — this is where the delivery-vehicle,
   documented-method, and capacity symptoms show up. Read `indicators.md`.
-- **Decorative / routing only:** `followers`, `verified`, `is_business`,
-  `has_commerce`, `has_linkhub`, `overwhelm`, `source_types`, `last_post`. Use to
-  route who gets looked at or to break ties — **never** as the screen verdict.
+- **Demand proxies [F5] (weak, corroborating — never alone):** `followers` (see
+  its row), `last_post` (a long-dead account is a demand/`no` signal). Read
+  *with* the bio's demand evidence, not as standalone criteria.
+- **Decorative / routing only:** `verified`, `is_business`, `has_commerce`,
+  `has_linkhub`, `overwhelm`, `source_types`. Use to route who gets looked at or
+  to break ties — **never** as the screen verdict.
 
 ## What the skill cannot see
 

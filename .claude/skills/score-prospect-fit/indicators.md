@@ -3,7 +3,8 @@
 The nurse's screen. **Layer-2 external indicators** from the canonical **Berry
 Nova ICP** doc (Drive) — observable symptoms that *estimate* fit. The bracketed
 `[F#]` is the fundamental each is a proxy for (F1 repeatable practice on own
-method · F2 knowledge in words · F3 real hours · F4 method captured); it's there
+method · F2 knowledge in words · F3 real hours · F4 method captured · F5 demand
+sufficiency); it's there
 so a human can trace symptom → cause. **You screen on the symptom; you never
 assert the [F#].** No single indicator decides — indicators select who gets a
 closer look; the fundamentals (doctor + doc) decide.
@@ -17,6 +18,7 @@ closer look; the fundamentals (doctor + doc) decide.
 | **Teachable material on their own method**: a named framework, book, course, or a podcast that *teaches* (not interviews) | [F4 captured] |
 | **Text-first deliverables**: frameworks, templates, written curricula | [F2 / F3b text] |
 | **Overload signs**: waitlist, rising prices, a booked calendar, a VA hired to absorb messages | [F3 — hours to hand off] |
+| **Demand evidence**: waitlist / at-capacity, premium or rising prices, a volume of testimonials or client results, a paid program that is *selling* (cohorts filling, application funnel) | [F5 — demand sufficiency] |
 
 ## Lean-disqualify symptoms
 
@@ -27,7 +29,8 @@ The unstarred ones lean disqualify; read the whole profile before ruling.
 |---|---|---|
 | **No online presence** | (nothing to screen / no program) | — (lean DQ) |
 | **Private account** — content can't be seen to screen | [F1 — no visible vehicle] | — (lean DQ; screen from bio or skip) |
-| Uses social media to **promote a business clearly outside our ICP** (realtor, interior/graphic designer selling design, retail/product brand, restaurant, performed-craft service sold to end clients) | (off-ICP) | — (lean DQ) |
+| The **offer they sell now is clearly outside our ICP** (realtor, interior/graphic designer selling design, retail/product brand, restaurant, performed-craft service sold to end clients) — judge the *current coaching offer*, not a former brand they mention or a visual niche they *coach* | (off-ICP) | — (lean DQ) |
+| **Demand looks like the bottleneck**: free lead-magnets only with no visible paid program, lead-gen funnels / discovery-call CTAs everywhere, or very low reach with no other demand evidence | [F5 — pre-scale] | — (lean → **later**, not no) |
 | **Highly bespoke / customized** approach — nothing repeatable | [F1 — nothing to clone] | — (lean DQ; fully-custom = DQ) |
 | **Works by asking questions / Socratic**, "I don't give answers", "holding space" | [F1 — method the AI can't do] | ★ |
 | **Regulated title needing case-specific advice** (clients need licensed answers) | [F1 — ceiling] | ★ |
@@ -57,16 +60,26 @@ action: fit → outreach · review → your triage · later → nurture · no �
    thin-content rule; those are `review`.)
 3. **Lean-fit present — a program/vehicle tell AND a teachable-method tell — and
    no hard stop?** → **fit**.
-4. **The visible problem is getting clients** (lead-gen funnels, discovery-call
-   CTAs everywhere), not serving them? → **later** (re-engageable). [F3]
+4. **Demand is the bottleneck, not delivery** [F5] — the visible problem is
+   *getting clients* (lead-gen funnels, discovery-call CTAs, free lead-magnets
+   with no paid program), or reach is very low with no demand evidence? →
+   **later** (re-engageable). If instead the business looks dead/abandoned
+   (parked site, stalled content), → **no**. Weigh demand *evidence* (waitlist,
+   prices, testimonials, a selling paid program), never follower count alone.
 5. **Else** — coach-shaped, no hard stop, but either knowledge + technique are
    **mixed** (state the serviceable share) or the vehicle/method tells **aren't
    visible** (thin/blocked link, bare bio) → **review**; list the missing
    evidence. The common, correct outcome. Don't inflate to fit, don't collapse
    to no. This is the pile a human triages.
 
-## What is NOT an indicator
+## What is NOT an indicator (and the one that was reclassified)
 
-- **Follower count / engagement / client count** — never a criterion; a routing
-  prior at most. A 2k and a 200k account screen the same on symptoms.
-- **Verified badge, business-account flag, posting recency** — context only.
+- **Follower count — a *weak proxy* for demand [F5], never a criterion on its
+  own** (ruling 2026-08-20, supersedes the old "never a criterion" absolute).
+  Read it only *with* demand evidence: low reach **plus** a waitlist / reviews /
+  off-platform clients still fits; low reach **with no** demand evidence points to
+  `later`/`no`. Never a fixed threshold — the floor varies by niche. What we screen
+  is **demand**, not popularity.
+- **Engagement rate** — context only, not a criterion.
+- **Verified badge, business-account flag, posting recency** — context only
+  (though a long-dead account is a demand/`no` signal, not this row).

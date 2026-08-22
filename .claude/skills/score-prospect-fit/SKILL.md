@@ -13,7 +13,9 @@ ICP** doc (Google Drive). You screen; a human decides.
 
 Governing rules from that doc: **indicators find, fundamentals decide** (these
 symptoms only estimate fit and select who gets examined), and **never cross
-layers** — follower count / engagement are not criteria, only routing priors.
+layers**. Engagement is context only; **follower count is a weak proxy for demand
+[F5], read only alongside demand evidence — never a criterion on its own, never a
+fixed threshold** (ruling 2026-08-20).
 
 Screen-only. No outreach, no DMs, no drafting.
 
@@ -25,9 +27,10 @@ delivery**, whose knowledge **already lives in words** (written or recorded) so
 an AI can absorb it and hand back the hours they burn re-answering the same
 questions. **We do not sell leads.** So screen for the tells of: a repeatable
 practice on their own method, knowledge that survives as text, real
-hours-to-offload, and a method that's captured (or close).
+hours-to-offload, a method that's captured (or close), and **enough client
+demand that delivery — not client-getting — is the bottleneck**.
 
-## The four fundamentals (the *why* — for your calibration, not the output)
+## The five fundamentals (the *why* — for your calibration, not the output)
 
 1. **A repeatable practice on their own method** — personally delivers ongoing
    expertise in a repeating format (1:1 with patterns, group, cohort, community)
@@ -45,6 +48,22 @@ hours-to-offload, and a method that's captured (or close).
    **later**, not no. Count hours, not clients.
 4. **A method that is captured, or close** — exists in written docs, audio,
    courses, or representative recorded sessions (~10hr screen; exportable).
+5. **Demand sufficiency** — enough recurring client demand that *delivery* is
+   (or is becoming) the bottleneck. Berry Nova relieves delivery load; that only
+   helps someone whose bottleneck is delivery, not client-getting. If *getting
+   clients* is the bottleneck, scaling delivery solves a problem they don't have
+   **yet** → `later` (or `no` if the business looks dead/abandoned). Judge from
+   **demand evidence, not follower count**: waitlist / at-capacity, premium or
+   rising prices, a volume of testimonials or client results, a paid program that
+   is actually selling (cohorts filling, application funnel), a VA/team hired for
+   inbound. Counter-signals: **free lead-magnets only with no visible paid
+   program** (can't convert), lead-gen funnels and discovery-call CTAs everywhere,
+   or very low reach **with no other demand evidence**. **Followers are a weak,
+   niche-dependent corroborating signal, never used alone and never a hard
+   threshold** — low reach *with* demand evidence (waitlist, reviews, off-platform
+   clients) still fits; low reach *with none* points to `later`/`no`. A ruling
+   dated 2026-08-20 overturns the old "followers are never a criterion" absolute:
+   demand *is* a criterion; followers are just one weak proxy for it.
 
 ## Step 1 — Screen for symptoms
 
@@ -75,10 +94,12 @@ Four verdicts, each mapped to what a human does with it:
   because the fit tells **aren't visible** from what you have (thin/blocked link,
   bare bio). **Do not guess** — list the missing evidence (Step 3). A silent or
   thin offer lands here, never in `no`.
-- **later** → *nurture / re-engage.* A real coach who could fit, but the visible
-  problem is *getting clients*, not serving them (lead-gen funnels, discovery-call
-  CTAs everywhere). Not the pain we remove — yet. Park and revisit; don't spend a
-  closer look now.
+- **later** → *nurture / re-engage.* A real coach who could fit, but **demand is
+  their bottleneck, not delivery** [F5] — the visible problem is *getting clients*
+  (lead-gen funnels, discovery-call CTAs, free lead-magnets with no paid program),
+  or reach is very low with no demand evidence. Not the pain we remove — yet. Park
+  and revisit; don't spend a closer look now. (If the business looks dead /
+  abandoned rather than merely pre-scale, that's `no`.)
 - **no** → *drop.* REQUIRES a positive signal: a structural hard stop fired
   (Socratic/asking, regulated case-specific, must-watch technique), **or** a
   clearly off-ICP business / fully-bespoke approach is what's visible. Name it.
@@ -118,6 +139,15 @@ design; it's the set a human triages.
   must-watch-technique → `no`. Off-ICP / fully-bespoke lean toward `no` but read
   the whole profile first. Private/silent offer is **not** a `no`.
 - **Talking-head video is fit, not a stop.** Only must-*watch* technique fails F2.
-- **Followers/engagement are never a criterion** — routing prior only.
+- **Demand is a criterion; followers are only a weak proxy for it** [F5]. Judge
+  demand from evidence (waitlist, prices, testimonials, a selling paid program,
+  VA-for-inbound), never from follower count alone or a fixed threshold. Low reach
+  **with** demand evidence still fits; low reach **with none**, or free-only with
+  no paid program, → `later`/`no`. (Supersedes the old "followers never a
+  criterion" rule, 2026-08-20.)
+- **Off-ICP is about the *coaching offer*, not an adjacent industry.** Don't cut
+  because they name another business (a former brand) or serve a visual niche —
+  cut only if the offer *they sell now* is off-ICP, or their *own* teaching is
+  must-watch/visual (F2).
 - **Never guess a missing fundamental** → `review` + list what's missing. Never a
-  false `no`. "Getting clients" is **later**, not no.
+  false `no`. "Getting clients" / demand-bottleneck is **later**, not no.

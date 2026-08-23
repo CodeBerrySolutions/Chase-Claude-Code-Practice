@@ -37,8 +37,12 @@ demand that delivery — not client-getting — is the bottleneck**.
    with a method compatible with an **answering** AI. Fails at two edges:
    nothing repeats (fully custom consulting), or the method's real job is
    something an answering AI can't do (works by *asking* questions / Socratic; a
-   regulated adviser whose clients need licensed answers). **Title alone doesn't
-   settle it** — a therapist running a non-clinical course can fit.
+   regulated **service** whose clients need licensed, case-specific answers about
+   their own situation — clinical therapy, medical/injectables, chiropractic
+   *treatment*). **The stop is on the service, not the credential or topic** — a
+   PhD / Dr. / therapist who instead sells a course, book, podcast, or community
+   about their subject is knowledge-in-words and fits; a therapist running a
+   non-clinical course can fit.
 2. **Knowledge that lives in words** — could a smart stranger learn it with eyes
    closed? **Talking-head video counts** (value is in what's *said*). Must-watch
    instruction (form checks, hands-on technique) does not. Knowledge fields fit,
@@ -86,8 +90,10 @@ in `indicators.md` (that file is the checklist). In brief:
 
 Four verdicts, each mapped to what a human does with it:
 
-- **fit** → *outreach queue.* Lean-fit symptoms present (a program / delivery
-  vehicle **and** a sign of teachable method) and no hard stop. A clean yes.
+- **fit** → *outreach queue.* A visible **paid** program / delivery vehicle **and**
+  a sign of teachable method **and** demand evidence [F5], with no hard stop. A
+  clean yes. A community or a free lead-magnet **alone** is not fit — that's
+  `review` (if unverified) or `later` (if demand is clearly the gap).
 - **review** → *needs your attention* (the biggest actionable pile). Coach-shaped,
   no hard stop, but the skill can't confidently call it — either because knowledge
   + technique are **mixed** (only part is text-serviceable — state the share), or
@@ -138,6 +144,12 @@ design; it's the set a human triages.
 - **Hard stops stop; lean indicators tilt.** Socratic / regulated-case-specific /
   must-watch-technique → `no`. Off-ICP / fully-bespoke lean toward `no` but read
   the whole profile first. Private/silent offer is **not** a `no`.
+- **Regulated fires on the service, not the person.** The stop is licensed,
+  case-specific clinical work (therapy, medical, chiropractic *treatment*). A
+  credentialed expert (PhD, Dr., therapist) selling a course / book / podcast /
+  community about the topic is knowledge-in-words → not a stop.
+- **`fit` needs demand, not just a vehicle.** Program + method with no demand
+  evidence is `review`; free-only / pre-scale is `later`.
 - **Talking-head video is fit, not a stop.** Only must-*watch* technique fails F2.
 - **Demand is a criterion; followers are only a weak proxy for it** [F5]. Judge
   demand from evidence (waitlist, prices, testimonials, a selling paid program,

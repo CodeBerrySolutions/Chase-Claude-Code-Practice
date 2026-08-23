@@ -33,7 +33,7 @@ The unstarred ones lean disqualify; read the whole profile before ruling.
 | **Demand looks like the bottleneck**: free lead-magnets only with no visible paid program, lead-gen funnels / discovery-call CTAs everywhere, or very low reach with no other demand evidence | [F5 — pre-scale] | — (lean → **later**, not no) |
 | **Highly bespoke / customized** approach — nothing repeatable | [F1 — nothing to clone] | — (lean DQ; fully-custom = DQ) |
 | **Works by asking questions / Socratic**, "I don't give answers", "holding space" | [F1 — method the AI can't do] | ★ |
-| **Regulated title needing case-specific advice** (clients need licensed answers) | [F1 — ceiling] | ★ |
+| **Regulated *service*** — clients need licensed, case-specific answers about their own situation (clinical therapy, medical/injectables, chiropractic *treatment*). Fires on the service delivered, **not a credential or topic**: a PhD/Dr./therapist selling a course, book, podcast, or community is knowledge-in-words, not a stop | [F1 — ceiling] | ★ |
 | **Must-watch technique**: form checks, hands-on demos, anything you must *watch* | [F2 — dies in transcription] | ★ |
 
 **Not a disqualifier:** talking-head video (value is in what's *said*), a coach
@@ -58,8 +58,10 @@ action: fit → outreach · review → your triage · later → nurture · no �
 2. **A clearly off-ICP business, or a fully-bespoke approach, is what's visible?**
    → **no**. (A *private* account or a *silent* offer is NOT this — see the
    thin-content rule; those are `review`.)
-3. **Lean-fit present — a program/vehicle tell AND a teachable-method tell — and
-   no hard stop?** → **fit**.
+3. **Lean-fit present — a visible *paid* program/vehicle tell AND a
+   teachable-method tell AND demand evidence [F5] — and no hard stop?** → **fit**.
+   (Program + method but no demand evidence → `review`; a community or free
+   lead-magnet alone is never `fit`.)
 4. **Demand is the bottleneck, not delivery** [F5] — the visible problem is
    *getting clients* (lead-gen funnels, discovery-call CTAs, free lead-magnets
    with no paid program), or reach is very low with no demand evidence? →

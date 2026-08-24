@@ -1,5 +1,5 @@
 # Scoring runner — the scheduled Claude session (T4)
-_The standalone instruction a fresh CCR session runs each fire to drain the scoring queue. Dated 2026-08-23._
+_The standalone instruction a fresh CCR session runs each fire to drain the scoring queue. Dated 2026-08-24._
 _Companion to `scoring-handoff.md` (schema/lifecycle/T0) and `references/fetch-gate.md`._
 
 ## Where it runs / billing

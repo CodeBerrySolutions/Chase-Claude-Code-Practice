@@ -1,5 +1,5 @@
 # Scoring handoff — n8n ⇄ Claude-session (T0 findings + T1 schema)
-_Design spec for operating the score-prospect-fit skill as a scheduled Claude session. Dated 2026-08-23._
+_Design spec for operating the score-prospect-fit skill as a scheduled Claude session. Dated 2026-08-24._
 
 Companion to `n8n-workflow-design.md`. This file is the build contract for the scoring split:
 n8n does harvest + fetch + all Sheet writes + watchdog (API-billed); a scheduled Claude Code session

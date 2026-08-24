@@ -1,5 +1,5 @@
 # Phase 0 Harvest — finalized spec (Berry Nova prospect harvester)
-_Finalized 2026-08-23 with reasonable defaults. Companion to `scoring-handoff.md` + `references/fetch-gate.md`._
+_Finalized 2026-08-24 with reasonable defaults. Companion to `scoring-handoff.md` + `references/fetch-gate.md`._
 
 Goal: fill the **work sheet** the scorer drains — one row per candidate, born at an initial `status`, with the
 stable key and the two scoring inputs (bio + fetched page). Hands-off, weekly, feeding the fetch-gate → scorer.

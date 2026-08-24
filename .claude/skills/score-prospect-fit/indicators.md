@@ -77,7 +77,7 @@ action: fit → outreach · review → your triage · later → nurture · no �
 ## What is NOT an indicator (and the one that was reclassified)
 
 - **Follower count — a *weak proxy* for demand [F5], never a criterion on its
-  own** (ruling 2026-08-20, supersedes the old "never a criterion" absolute).
+  own** (ruling 2026-08-24, supersedes the old "never a criterion" absolute).
   Read it only *with* demand evidence: low reach **plus** a waitlist / reviews /
   off-platform clients still fits; low reach **with no** demand evidence points to
   `later`/`no`. Never a fixed threshold — the floor varies by niche. What we screen

@@ -7,7 +7,7 @@ engagers. Columns, in the order the pilot export used them:
 |---|---|---|
 | `username` | Instagram handle | The `@` identity; use in output. |
 | `full_name` | Display name | Often carries the niche ("… \| Business Coach"). Read it. |
-| `followers` | Follower count | **A weak proxy for demand [F5], read only with demand evidence — never alone, never a fixed threshold** (ruling 2026-08-20, `indicators.md`). Low reach *with* a waitlist / reviews / off-platform clients still fits; low reach *with none* → `later`/`no`. Ignore the old band thresholds; the floor varies by niche. |
+| `followers` | Follower count | **A weak proxy for demand [F5], read only with demand evidence — never alone, never a fixed threshold** (ruling 2026-08-24, `indicators.md`). Low reach *with* a waitlist / reviews / off-platform clients still fits; low reach *with none* → `later`/`no`. Ignore the old band thresholds; the floor varies by niche. |
 | `private` | Account is private | Can't see content to screen → screen from bio alone or skip; not a verdict by itself. |
 | `verified` | Blue check | Weak signal only. Not required for A; common on mega D_fail too. |
 | `is_business` | IG business/creator account | Weak signal. Not decisive. |

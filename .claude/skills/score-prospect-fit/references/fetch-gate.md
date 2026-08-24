@@ -1,5 +1,5 @@
 # Fetch-quality gate — policy & markers (T2/T3)
-_Versioned config for the mechanical fetch gate. Dated 2026-08-23._
+_Versioned config for the mechanical fetch gate. Dated 2026-08-24._
 
 The gate sits in the n8n fetch workflow **after Firecrawl and before the sheet write**. It classifies each
 link-in-bio fetch into a `fetch_status` using **only** transport facts and content-marker regex — **zero ICP

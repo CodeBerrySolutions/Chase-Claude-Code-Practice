@@ -15,7 +15,7 @@
 //
 // Run the self-test:  node fetch_gate.mjs --test   (no network, no API)
 
-// ---- tunables (dated 2026-08-23; change here, re-run the self-test) ----------
+// ---- tunables (dated 2026-08-24; change here, re-run the self-test) ----------
 export const THIN_FLOOR = 200;          // min non-whitespace chars of real content for `ok`
 export const HTTP_BLOCK = [401, 403, 429]; // auth/rate-limit walls => blocked
 

@@ -15,7 +15,7 @@ Governing rules from that doc: **indicators find, fundamentals decide** (these
 symptoms only estimate fit and select who gets examined), and **never cross
 layers**. Engagement is context only; **follower count is a weak proxy for demand
 [F5], read only alongside demand evidence — never a criterion on its own, never a
-fixed threshold** (ruling 2026-08-20).
+fixed threshold** (ruling 2026-08-24).
 
 Screen-only. No outreach, no DMs, no drafting.
 
@@ -66,7 +66,7 @@ demand that delivery — not client-getting — is the bottleneck**.
    niche-dependent corroborating signal, never used alone and never a hard
    threshold** — low reach *with* demand evidence (waitlist, reviews, off-platform
    clients) still fits; low reach *with none* points to `later`/`no`. A ruling
-   dated 2026-08-20 overturns the old "followers are never a criterion" absolute:
+   dated 2026-08-24 overturns the old "followers are never a criterion" absolute:
    demand *is* a criterion; followers are just one weak proxy for it.
 
 ## Step 1 — Screen for symptoms
@@ -156,7 +156,7 @@ design; it's the set a human triages.
   VA-for-inbound), never from follower count alone or a fixed threshold. Low reach
   **with** demand evidence still fits; low reach **with none**, or free-only with
   no paid program, → `later`/`no`. (Supersedes the old "followers never a
-  criterion" rule, 2026-08-20.)
+  criterion" rule, 2026-08-24.)
 - **Off-ICP is about the *coaching offer*, not an adjacent industry.** Don't cut
   because they name another business (a former brand) or serve a visual niche —
   cut only if the offer *they sell now* is off-ICP, or their *own* teaching is

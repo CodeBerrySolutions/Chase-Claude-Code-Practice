@@ -90,9 +90,16 @@ Both are owned by n8n — the single Sheets writer/reader — and called via `mc
 `CHUNK=10` · lease TTL `30 min` · `POISON=3` · soft budget `STOP`/`MINUTES` (**measure in T8** — a 10-row dry
 run extrapolated against BOTH the 5-hour and weekly caps) · `<ID>`/`<channel>` (Phil) · off-hours window.
 
-## Still open (fed by other tasks/answers)
+## Resolved build parameters (2026-08-24)
+- **Spreadsheet `<ID>`** = the Screened work sheet `1gUhvTA2UxxctxwXwsrxz6R82nnpXKhuQWF_4kqZz3oY` (tab gid 1722814082).
+- **`<channel>`** = `#fd_marketing` (`C0BR9JW9Z6F`) — digest *and* watchdog (watchdog alerts prefixed
+  `⚠️ SCORING DID NOT RUN`).
+- **Schedule** = daily **08:00 UTC** (fresh session), ~2h after the Mon 06:00 UTC harvest. Sanity-check against
+  Phil's local off-hours; adjust the one cron field if it collides with his work window.
+- **`CHUNK=10` · lease TTL 30 min · `POISON=3`** as specified.
+
+## Still open (fed by other tasks)
 - The `queue-reader` + `verdict-writer` helper workflows are part of the T2/T9 n8n build.
-- Soft-budget numbers come from the **T8 dry run**.
-- Spreadsheet id, Slack channel, timezone/off-hours window from Phil.
+- Soft-budget `STOP`/`MINUTES` come from the **T8 dry run** (only number still to measure).
 - `_Control` lock is **best-effort** (Sheets has no atomic compare-and-swap) — acceptable because a single
   daily fire is the only scheduled writer and manual fires are discouraged while a run is active.

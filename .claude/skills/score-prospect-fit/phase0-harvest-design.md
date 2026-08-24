@@ -80,11 +80,17 @@ credits are spent only on genuinely new prospects. Rough budget at ~1–2 credit
 
 Pagination/caps use `splitInBatches`; the `Limit` node bounds credits.
 
-## Still needs Phil (only these)
-1. **Which credential holds the ScrapeCreators `x-api-key`** — one of the existing "Header Auth" creds, or add one?
-2. **Final credit ceiling** — keep 300 new-profiles/run, or set to your budget?
-3. Confirm the **`ig_user_id` field name** on the first live profile call (spec assumes it's present).
-4. Seeds — keep the pilot three, or swap Amy → James Wedmore?
+## Resolved build parameters (2026-08-24)
+Decided defaults so the build can proceed; each is cheap to change later.
+1. **ScrapeCreators credential:** use `httpHeaderAuth` **"Header Auth account 2"** (`oB8NBmiRktRjoNwk`, BerryNova
+   project). Verify on the first call — a 401 means switch to `SvSJeZgEkbUP0i1Q` or add a dedicated cred.
+2. **Credit ceiling:** **300** new profile-enrich calls/run (Limit node).
+3. **`ig_user_id` field:** capture **`pk`**, fall back to **`id`**, from the profile object; confirm on first call.
+4. **Seeds:** keep the pilot three (Jasmine Star / Amy Porterfield / Brendon Burchard).
+5. **Cadence:** harvest **Mondays 06:00 UTC**; scoring **daily 08:00 UTC** (see `scoring-runner.md`). Adjust to
+   Phil's off-hours if 08:00 UTC collides with his work window (one cron field).
+6. **Re-score freshness window:** **90 days** — on re-harvest, skip a prospect already `scored` within 90d
+   (dedup step reads the work sheet by `ig_user_id` + `screened_at`); older than 90d may re-enqueue.
 
 ## Not in scope
 - Comment-text qualification (the scorer's job) · direct instagram.com scraping / logins (API-only, like the pilot).

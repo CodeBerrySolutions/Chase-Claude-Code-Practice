@@ -1,106 +1,90 @@
-# Phase 0 Harvest — design (Berry Nova prospect harvester)
+# Phase 0 Harvest — finalized spec (Berry Nova prospect harvester)
+_Finalized 2026-08-23 with reasonable defaults. Companion to `scoring-handoff.md` + `references/fetch-gate.md`._
 
-Goal: fill the **raw prospects sheet** the screener reads — one row per candidate
-with `username`, `full_name`, `followers`, `bio`, `ext_urls`, `private`,
-`verified`, `biz_category`, `last_post`, `best_comment`, `seed`, `source_type`.
-Hands-off, on a schedule, feeding straight into the Screener (`bK0muPffxRMXLazZ`).
+Goal: fill the **work sheet** the scorer drains — one row per candidate, born at an initial `status`, with the
+stable key and the two scoring inputs (bio + fetched page). Hands-off, weekly, feeding the fetch-gate → scorer.
 
-**Source of truth for the method:** the pilot doc *Instagram Seed Investigation —
-Berry Nova Harvest Pilot*. This is that pilot's **Phase 2** (the commenter harvest
-the pilot deferred to "the Apify job" — but we use the same **ScrapeCreators**
-API the pilot already validated, not Apify).
+**Source of truth for the method:** the pilot doc *Instagram Seed Investigation — Berry Nova Harvest Pilot*.
+This is that pilot's **Phase 2** (commenter harvest), using the **ScrapeCreators** API the pilot validated.
 
-## The scraper: ScrapeCreators (already proven in the pilot)
+## What each run produces (per `scoring-handoff.md` T1 schema)
+Harvest + enrich + fetch write one work-sheet row per **new** prospect:
+- `row_key` = **`ig_user_id`** (ScrapeCreators profile numeric id) — the stable dedup key. Fallback
+  `u:<username>` if the id is ever absent. **← this answers the open "stable key" question: the profile
+  endpoint returns IG's numeric id; capture it. Confirm the exact field name on the first live call.**
+- `username`, `bio`, `ext_urls` (the fetch target), `run_id` (ISO week), plus provenance `seed`, `source_type`,
+  `best_comment`, and the routing/context fields `followers`, `full_name`, `biz_category`, `last_post`,
+  `private`, `verified` (weak demand/routing proxies per `field-glossary.md`, never criteria).
+- Then the **Firecrawl fetch + gate** (`fetch_gate.mjs`) fill `fetched_content`, `fetch_status`, `fetch_note`,
+  `source=firecrawl`, and set the initial `status` (`to_score` / `needs_deep_fetch`).
+- Harvest does **not** compute `offer_type` — the scorer computes it from `fetched_content` (one source of truth).
 
+## The scraper: ScrapeCreators (proven in the pilot)
 - Base `https://api.scrapecreators.com`, auth via **`x-api-key`** header.
 - Endpoints (confirmed live in the pilot):
-  - `GET /v1/instagram/profile` — verify + followers + bio + links (profile enrich)
+  - `GET /v1/instagram/profile` — id + verify + followers + bio + links (profile enrich; **source of `ig_user_id`**)
   - `GET /v2/instagram/user/posts` — an account's posts, paginate via `next_max_id`
   - `GET /v2/instagram/post/comments` — a post's commenters, paginate via `cursor`
 - Reel detection: `product_type == "clips"`.
-- In n8n: **HTTP Request** node + an **httpHeaderAuth** credential holding the
-  `x-api-key`. (You have "Header Auth" credentials — confirm one is the
-  ScrapeCreators key, or add one.)
+- In n8n: **HTTP Request** node + an **httpHeaderAuth** credential holding the `x-api-key`.
 
-## The harvest logic
-
+## Harvest logic
 ```
-seeds → recent posts (30d, prefer carousels not reels) → commenters
-      → dedup commenters (across posts + seeds, and vs. already-harvested)
-      → profile-enrich each new commenter → write prospect row
+seeds → recent posts (30d, carousels not reels) → commenters
+      → dedup commenters (across posts+seeds, and vs. rows already in the work sheet, by ig_user_id)
+      → profile-enrich each NEW commenter (captures ig_user_id, bio, ext_urls, …)
+      → Firecrawl fetch link-in-bio → fetch_gate → write work-sheet row at its initial status
 ```
+Grounded in the pilot:
+- **Carousels/feed over reels** — reels accrue plays not comments; filter `product_type != "clips"`.
+- **Keep keyword-bait commenters** — qualification happens on the profile, not the comment. Tag `source_type`
+  instead of dropping: `keyword_bait` (single keyword), `personal` (@-tag/emotional), `organic` (≥4-word human
+  sentence). **Qualification is the scorer's job**, never harvest's — harvest casts the net + enriches only.
 
-Grounded in the pilot's findings:
-- **Prefer carousels/feed over reels.** Reels accumulate plays, not comments, and
-  the big-comment posts are often keyword-DM funnels. Filter `product_type !=
-  "clips"`; the pilot explicitly says harvest the carousels.
-- **Keep keyword-bait commenters — don't drop them.** "Qualification happens on
-  their profiles, not their comment text" (Amy's "comment PODCAST" crowd are
-  on-target course-creators). Tag them via `source_type` instead of filtering:
-  - `keyword_bait` — comment is a single keyword ("Podcast", "Training")
-  - `personal` — an @-tag or emotional/personal reply
-  - `organic` — a substantive human sentence (≥4 words, the pilot's classifier)
-- **Qualification is the Screener's job**, not harvest's. Harvest casts the net
-  and enriches; the Screener (Phase 1, built) applies the ICP symptoms. So
-  harvest should **not** pre-judge fit — only dedup and enrich.
-
-## Recommended seeds (from the pilot, ranked)
-
-1. **@jasminestar** — highest comment quality (66% substantive), median 49.
-2. **@amyporterfield** — volume leader (~3,123 comments/30d), on-target audience.
-3. **@brendonburchard** — distinct 3rd flavor (mindset), comment-friendly carousels.
-Swap option: **@jameswedmore** for Amy if you weight audience purity over volume.
+## Locked defaults (correct anytime)
+- **Seeds:** `@jasminestar` (66% substantive, median 49) · `@amyporterfield` (volume ~3,123 comments/30d) ·
+  `@brendonburchard` (mindset flavor). Swap `@jameswedmore` for Amy if weighting audience purity over volume.
+- **Caps:** 8 non-reel posts/seed · 150 comments/post · **300 new profile-enrich calls/run** (the credit lever).
+- **Cadence:** weekly, before the scorer's off-hours window.
+- **Topology:** **one workflow** — harvest → enrich → Firecrawl fetch → gate → write. (No separate `harvested`
+  state; rows are born at `to_score`/`needs_deep_fetch`. Split into two workflows only if we later want
+  un-fetched rows visible during a Firecrawl rate-limit — deferred.)
+- **Reels:** carousels-only.
 
 ## Cost model (the real constraint)
+Credit driver = **one profile call per unique new commenter**. Dedup vs. the work sheet (by `ig_user_id`) so
+credits are spent only on genuinely new prospects. Rough budget at ~1–2 credits/call:
+3 seeds × (8 post-list + ~8×2 comment pages) + ~300 profile calls + 300 Firecrawl fetches ≈ **~350 API +
+~300 Firecrawl/run**. The `Limit` node before profile-enrich enforces the ceiling. Tune to the credit budget.
 
-The credit driver is **one profile call per unique commenter**. Amy alone has
-~3k comments/30d, so uncapped this is thousands of calls per run. Controls:
-- **Caps:** N posts/seed (e.g. 8 non-reel), M comments/post (e.g. 150) →
-  dedup → cap **new** profile-enrich calls/run (e.g. 300).
-- **Dedup vs. already-harvested:** skip usernames already in the sheet, so each
-  run spends credits only on genuinely new prospects.
-- Rough budget at ~1–2 credits/call: 3 seeds × (8 post-list + 8×~2 comment pages)
-  + ~300 profile calls ≈ **350–400 calls/run**. Tune caps to your credit budget.
+## n8n node plan (one harvester+fetch workflow, project BerryNova)
+1. **Schedule Trigger** — weekly, before the scorer.
+2. **Seeds** — `Set`/`Code` (or a tiny seeds sheet): the three handles above.
+3. **List Posts** — HTTP `GET /v2/instagram/user/posts` per seed; paginate `next_max_id` to the 30-day
+   boundary or post cap; keep `product_type != "clips"`.
+4. **Split posts → List Comments** — HTTP `GET /v2/instagram/post/comments`; paginate `cursor` to the comment
+   cap; emit one item per commenter `{username, comment_text, seed, post_id}`.
+5. **Classify + dedup** — `Code`: tag `source_type`; dedup by `username` within the run; then read the work
+   sheet and **drop commenters whose `ig_user_id`/`row_key` already exists** (insert-if-absent). (Username→id
+   isn't known until enrich, so pre-dedup by username to avoid wasted enrich calls, then final-dedup by
+   `ig_user_id` at write.)
+6. **Limit** — enforce the per-run profile-call ceiling (300).
+7. **Profile Enrich** — HTTP `GET /v1/instagram/profile?handle=…` per new commenter → capture **`ig_user_id`**,
+   `bio`, `ext_urls`, `followers`, `full_name`, `biz_category`, `last_post`, `private`, `verified`.
+8. **Firecrawl fetch** — scrape `ext_urls` (first link); **error output branch, NOT continue-on-error**.
+9. **Fetch gate (Code node)** — paste `classifyFetch`/`statusFor` from `pipeline/fetch_gate.mjs` verbatim; set
+   `fetch_status`, `fetch_note`, `status`, `source=firecrawl`. Both branches emit a row.
+10. **Write row** — the single n8n Sheets writer, **insert-if-absent on `row_key`** into the work sheet
+    (never `appendOrUpdate` that would clobber a verdict), plus `run_id`, `harvested_at`, `seed`,
+    `source_type`, `best_comment`.
 
-## n8n node plan (harvester workflow)
+Pagination/caps use `splitInBatches`; the `Limit` node bounds credits.
 
-Target project **BerryNova**. Own workflow, scheduled just before the Screener.
-
-1. **Schedule Trigger** — weekly (before the screener's run).
-2. **Seeds** — a `Set`/`Code` node or a small "seeds" sheet: `[{seed:'jasminestar'},
-   {seed:'amyporterfield'},{seed:'brendonburchard'}]`.
-3. **List Posts** — HTTP Request `GET /v2/instagram/user/posts` per seed, loop
-   pagination (`next_max_id`) until 30-day boundary or post cap; keep
-   `product_type != "clips"`.
-4. **Split** posts → **List Comments** — HTTP Request `GET /v2/instagram/post/comments`
-   per post, paginate `cursor` to the comment cap. Emit one item per commenter
-   with `{username, comment_text, seed, post_id}`.
-5. **Classify + dedup** — a `Code` node: tag `source_type` from `comment_text`;
-   dedup by `username` within the run; then a **Google Sheets read** of existing
-   rows + `filter` to drop usernames already harvested.
-6. **Profile Enrich** — HTTP Request `GET /v1/instagram/profile?handle=…` per new
-   commenter → `followers, bio, ext_urls, private, verified, full_name,
-   biz_category, last_post`. Cap items with a `Limit` node first.
-7. **Write Prospect Row** — Google Sheets `appendOrUpdate` (match `username`) into
-   the raw prospects sheet the Screener reads, plus `harvested_at`, `seed`,
-   `source_type`, `best_comment`.
-
-Pagination + caps use `splitInBatches` loops; a `Limit` node enforces the
-per-run profile-call ceiling so credits stay bounded.
-
-## Steering decisions before I build
-
-1. **Scraper = ScrapeCreators?** (Recommended — proven in your pilot, endpoints
-   known.) And which credential holds the `x-api-key` — one of the "Header Auth"
-   creds, or add one?
-2. **Seeds** — Jasmine Star + Amy Porterfield + Brendon Burchard (pilot pick), or
-   swap Amy → James Wedmore for purity?
-3. **Caps** — posts/seed, comments/post, and the **new-profiles/run ceiling**
-   (this sets the credit spend). Suggest 8 / 150 / 300 to start.
-4. **Cadence** — weekly, a bit before the screener? And should harvest + screen be
-   two chained workflows or one?
-5. **Reel handling** — carousels-only (recommended), or include reels too?
+## Still needs Phil (only these)
+1. **Which credential holds the ScrapeCreators `x-api-key`** — one of the existing "Header Auth" creds, or add one?
+2. **Final credit ceiling** — keep 300 new-profiles/run, or set to your budget?
+3. Confirm the **`ig_user_id` field name** on the first live profile call (spec assumes it's present).
+4. Seeds — keep the pilot three, or swap Amy → James Wedmore?
 
 ## Not in scope
-- Comment-text qualification (that's the Screener).
-- Direct instagram.com scraping / logins (the pilot stayed API-only; so do we).
+- Comment-text qualification (the scorer's job) · direct instagram.com scraping / logins (API-only, like the pilot).

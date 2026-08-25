@@ -90,13 +90,77 @@ Both are owned by n8n — the single Sheets writer/reader — and called via `mc
 `CHUNK=10` · lease TTL `30 min` · `POISON=3` · soft budget `STOP`/`MINUTES` (**measure in T8** — a 10-row dry
 run extrapolated against BOTH the 5-hour and weekly caps) · `<ID>`/`<channel>` (Phil) · off-hours window.
 
-## Resolved build parameters (2026-08-24)
-- **Spreadsheet `<ID>`** = the Screened work sheet `1gUhvTA2UxxctxwXwsrxz6R82nnpXKhuQWF_4kqZz3oY` (tab gid 1722814082).
+## Resolved build parameters (updated 2026-08-24)
+- **Spreadsheet `<ID>`** = the **real Work Sheet** `1gZu5OuMhZ4kBfCPGNlsj09d07dtvkVsfQ2yk8u5252o`, tab **`Untitled`**
+  (supersedes the old Screened sheet `1gUhvTA2…` — the 15 rows were migrated here). The runner reaches it only
+  through the two helper workflows, which are already repointed at this sheet.
+- **Helper workflows:** `queue-reader` = `G9vzcreuIpY1W7kn` · `verdict-writer` = `80Vgb0oBZyZeYcrj` (both BerryNova).
 - **`<channel>`** = `#fd_marketing` (`C0BR9JW9Z6F`) — digest *and* watchdog (watchdog alerts prefixed
   `⚠️ SCORING DID NOT RUN`).
-- **Schedule** = daily **08:00 UTC** (fresh session), ~2h after the Mon 06:00 UTC harvest. Sanity-check against
-  Phil's local off-hours; adjust the one cron field if it collides with his work window.
-- **`CHUNK=10` · lease TTL 30 min · `POISON=3`** as specified.
+- **Schedule** = daily **08:00 UTC** (cron `0 8 * * *`, fresh session), ~2h after the Mon 06:00 UTC harvest.
+  **Timezone sanity-check before enabling:** pilot timestamps carry a `+08:00` offset, so 08:00 UTC ≈ 16:00 local
+  (Phil's workday, not off-hours) — if that's his tz, shift the one cron hour field to a genuine off-hours slot.
+- **Soft budget (provisional, pending T8):** stop at **50 scored rows OR 60 min**, whichever first.
+- **`CHUNK=10` · lease TTL 30 min · `POISON=3`** as specified. `_Control` lock **deferred** for the pilot
+  (single daily fire is the only scheduled writer).
+
+## Deployment (T5) — how the Routine must be created
+The runner is entirely dependent on the **n8n MCP** (queue-reader/verdict-writer) and **Slack** connectors. A
+CCR Routine created from a headless/meta-MCP session **carries no connectors** (confirmed: the fired session
+would have zero `mcp__*` tools and fail its own preflight). So T5 must be created **from the claude.ai Routines
+UI**, or from an interactive session that itself holds the n8n + Slack + Google connectors, so the fired
+sessions inherit them.
+
+**Staged, not yet live.** Do not enable until the harvest is running (an enabled daily fire against an empty
+queue posts a `scored 0 …` digest to `#fd_marketing` every day — the exact spam to avoid). Enable at **T9
+cutover**, alongside activating the harvest + watchdog.
+
+**Setup recipe (Routines UI):** new Routine → *fresh session each fire* in this repo's environment
+(`env_01Mq6tVbms9n8BgJx9UGdzdy`) → cron `0 8 * * *` (adjust hour per the tz check above) → attach the **n8n**,
+**Slack**, and **Google Drive** connectors → paste the prompt below verbatim → **leave disabled** until cutover.
+
+## The filled-in runner prompt (paste verbatim into the Routine)
+> You are the **Berry Nova prospect-scoring runner**. This is a fresh, unattended session. Score fetched
+> prospect rows with the `score-prospect-fit` skill (in this repo) and write verdicts back on the user's plan.
+> You **NEVER fetch web pages**, and you **write ONLY through the n8n verdict-writer workflow** — you have no
+> direct Google Sheets write. Work sheet: tab `Untitled`, spreadsheet
+> `1gZu5OuMhZ4kBfCPGNlsj09d07dtvkVsfQ2yk8u5252o`. Columns are documented in `scoring-handoff.md`.
+>
+> Helpers — call via the n8n MCP `execute_workflow`, then poll `get_workflow_execution` (includeData):
+> - **queue-reader** = `G9vzcreuIpY1W7kn` — input `{ statuses: ["to_score","scoring"] }`, returns rows as JSON.
+> - **verdict-writer** = `80Vgb0oBZyZeYcrj` — input `{ writes: [ { row_key, <col>:<val>, … } ] }`, upsert on `row_key`.
+>
+> **1. Preflight.** Confirm the n8n MCP is available. If missing you can neither read nor write — post a Slack
+> alert to `#fd_marketing` (`C0BR9JW9Z6F`) if Slack is available, else stop. Never score without a working
+> writer. Get your session id (`get_session`) for `scored_by`.
+>
+> **2. Read the queue.** Call queue-reader for `[to_score, scoring]`; poll for the rows. Zero `to_score` →
+> skip to the digest (step 6) and report a clean empty run.
+>
+> **3. Orphan sweep.** For each `scoring` row with `claim_at` older than **30 min**, set `status=to_score`,
+> clear `claim_at` (prior run died mid-row). Reclaim, don't skip.
+>
+> **4. Drain `to_score`, oldest `harvested_at` first, in chunks of 10**, up to the cap. Per row:
+> - **Re-gate.** If `fetch_status` ∉ {ok,no_link}, or `fetched_content` is empty / matches the fetch-gate junk
+>   markers (`references/fetch-gate.md`), set `status=needs_deep_fetch`, `fetch_note="late gate: <reason>"`, skip.
+> - **Poison.** Missing `attempt` = 0. If `attempt >= 3` → `status=error_held`, `reason="poison: repeated failures"`, skip.
+> - **Claim** (batch/chunk): `status=scoring`, `claim_at=<now>`, `scored_by=<id>`, `attempt=<attempt+1>`.
+> - **offer_type** from `fetched_content` via the skill's State A/B/C rubric (`input-contract.md`).
+> - **Score** `score-prospect-fit` on `bio` + `fetched_content` (+`offer_type`) → `screen/fired/missing/closer_look/reason`.
+>   Never guess on empty content; thin/blocked = `needs_deep_fetch`, never `no`.
+> - **Commit** (one verdict-writer call/chunk): verdict + `offer_type` + `screened_at=<now>` + `status=scored`,
+>   keyed on `row_key`. On write failure retry once, else `error_held`, `reason="write failed"`, flag in digest.
+> - **Skill exception:** retry ≤2×, then `error_held`, `reason=<error>`.
+>
+> **5. Budget (provisional, pending T8):** stop at **50 scored rows OR 60 min**. On stop: leave the rest
+> `to_score`, post the partial digest, and `send_later`-fire to resume only if still in off-hours. Always reported.
+>
+> **6. Digest — once.** One Slack line to `#fd_marketing` (`C0BR9JW9Z6F`): `Scoring <date>: scored N (fit A /
+> review B / later C / no D). Deep-Fetch Queue: X. Error-held: Y. Unfetchable: Z. Remaining to_score: R.`
+> State every count even when zero.
+>
+> **Never:** fetch web pages · write except via verdict-writer · touch a `scored`/`unfetchable`/`error_held`
+> row · emit a verdict on empty/thin content.
 
 ## Still open (fed by other tasks)
 - The `queue-reader` + `verdict-writer` helper workflows are part of the T2/T9 n8n build.

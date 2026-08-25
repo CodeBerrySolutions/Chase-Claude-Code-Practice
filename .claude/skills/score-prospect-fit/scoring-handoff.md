@@ -55,6 +55,7 @@ Tab: the existing **`Screened Prospects`** (extended into the superset below). O
 | `row_key` | H | string | **Stable key** = `ig_user_id` (or `u:<username>` fallback). Upsert/dedup key. |
 | `username` | H | string | Current handle (display; may change over time). |
 | `run_id` | H | string | Harvest batch, ISO week e.g. `2026-W34`. |
+| `harvested_at` | H | iso8601 | When the row was harvested. Drives the scorer's oldest-first drain order. |
 | `bio` | H | text | Scoring input. |
 | `ext_urls` | H | string | Link(s)-in-bio; fetch + deep-fetch target. |
 | `fetched_content` | H·P | text | Firecrawl markdown (or pasted 9222 text). Scoring input. |
@@ -72,6 +73,8 @@ Tab: the existing **`Screened Prospects`** (extended into the superset below). O
 | `closer_look` | C | enum | `yes: <what>` / `no`. |
 | `reason` | C | string | One-line cited symptom. |
 | `screened_at` | C | iso8601 | Verdict timestamp. |
+| `my_assessment` | P | string | Phil's human calibration verdict (yes/partial/no/…). Manual review only. |
+| `my_observations` | P | text | Phil's free-text notes from human review. Manual review only. |
 
 Consumers (Slack digest, `draft-outreach`) read **only `status = scored`** (a Filter View) — so no in-flight
 or errored row can leak into a decision surface. This gives the isolation of a separate results tab without a
@@ -116,8 +119,16 @@ Filter Views (the virtual queues): **To score** (`to_score`), **Deep-Fetch Queue
 (`unfetchable`), **Scored — this run** (`scored` + `run_id`). Conditional formatting on `status`:
 green `scored`, amber `to_score`/`needs_deep_fetch`, red `error_held`, grey `unfetchable`.
 
-### Migration / backfill of existing rows (do at cutover)
-The current `Screened Prospects` has 7 columns keyed on `username` (the pilot's 15 rows). At cutover:
+### Migration / backfill of existing rows — DONE 2026-08-24
+The pilot's 15 reviewed rows were migrated into the **real Work Sheet**
+`1gZu5OuMhZ4kBfCPGNlsj09d07dtvkVsfQ2yk8u5252o` (tab `Untitled`, the 24-column superset above) via the
+`verdict-writer` upsert. Each legacy row carries `status=scored`, `source=legacy`, `row_key=u:<username>`
+(no `ig_user_id` yet — backfill on next harvest that matches by handle), plus Phil's `my_assessment` /
+`my_observations`. Because they're `scored`, the scorer skips them; they won't be re-processed. The three
+helper workflows (verdict-writer `80Vgb0oBZyZeYcrj`, queue-reader `G9vzcreuIpY1W7kn`, watchdog
+`1I6deH79WKDi4kWE`) are all repointed at this spreadsheet.
+
+Original at-cutover recipe (kept for reference):
 1. Add the new columns (above). For each legacy row set `status=scored`, `source=legacy`, and fill
    `row_key` (backfill `ig_user_id` where cheap, else `u:<username>`).
 2. So legacy rows are skipped by the scorer (they're `scored`) and won't be re-processed.

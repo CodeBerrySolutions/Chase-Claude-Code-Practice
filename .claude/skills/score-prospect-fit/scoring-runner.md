@@ -87,8 +87,41 @@ Both are owned by n8n — the single Sheets writer/reader — and called via `mc
   the next digest/alert — never un-terminal AND unmentioned.
 
 ## Tunables (fill at build)
-`CHUNK=10` · lease TTL `30 min` · `POISON=3` · soft budget `STOP`/`MINUTES` (**measure in T8** — a 10-row dry
-run extrapolated against BOTH the 5-hour and weekly caps) · `<ID>`/`<channel>` (Phil) · off-hours window.
+`CHUNK=10` · lease TTL `30 min` · `POISON=3` · soft budget `STOP`/`MINUTES` (**measure in the T8 dry run** —
+see below) · `<ID>`/`<channel>` (Phil) · off-hours window.
+
+## T8 — the dry run (what it is, exactly)
+The runner stops at a **soft budget** so one scoring session never blows through the plan's rate windows. Two
+placeholders in that budget — **`STOP`** (max rows per fire) and **`MINUTES`** (max wall-clock per fire) — are
+currently *guessed* (provisional 50 rows / 60 min). **T8 is the single measurement that replaces the guess with
+real numbers.** It is not a feature; it's a one-off calibration pass.
+
+**What it measures — per-row cost of the scoring loop, in the two currencies that actually bind:**
+1. **Plan-token cost per row** — how much of the Max-20x **5-hour window** and **weekly cap** one scored
+   prospect consumes. This is the expensive part deliberately put on plan tokens: the scorer reads a `bio` + a
+   full `fetched_content` page (can be long), applies the skill, and does 2–3 n8n round-trips per chunk.
+2. **Wall-clock per row** — seconds per prospect, including `execute_workflow` + poll latency for
+   read / claim / commit.
+
+**How it's run — one controlled pass over a small fixed sample:**
+- Sample = **10 real `to_score` rows** from the first live harvest (T12) — so it needs a non-empty queue and is
+  therefore **downstream of the first harvest**. (The 15 migrated rows are all `scored`; nothing to drain from
+  them.)
+- Run the runner in **measure mode**: score exactly those 10, then **stop and report** — do not drain further.
+- Report: tokens consumed (start-of-window vs end), elapsed seconds, the derived **per-row averages**
+  (tokens/row, sec/row), and the **worst-case row** (longest `fetched_content`) so the budget is set on the fat
+  tail, not the mean.
+
+**What it produces — two numbers, plugged straight into step 5 of the runner prompt:**
+- **`STOP`** = rows that fit before eating too much of the 5-hour window (cross-checked against the weekly cap).
+- **`MINUTES`** = wall-clock ceiling per fire.
+
+The runner already has the machinery to use them: at each chunk boundary it checks elapsed/headroom, and on
+hitting the budget it leaves the rest `to_score`, posts a partial digest, and `send_later`-fires to resume
+within off-hours. **T8 only calibrates where those two thresholds sit; nothing else changes.**
+
+**One-line version:** score 10 real prospects once, measure plan-tokens and minutes per row, set `STOP`/`MINUTES`
+from that instead of the provisional 50 / 60.
 
 ## Resolved build parameters (updated 2026-08-24)
 - **Spreadsheet `<ID>`** = the **real Work Sheet** `1gZu5OuMhZ4kBfCPGNlsj09d07dtvkVsfQ2yk8u5252o`, tab **`Untitled`**
@@ -164,6 +197,7 @@ cutover**, alongside activating the harvest + watchdog.
 
 ## Still open (fed by other tasks)
 - The `queue-reader` + `verdict-writer` helper workflows are part of the T2/T9 n8n build.
-- Soft-budget `STOP`/`MINUTES` come from the **T8 dry run** (only number still to measure).
+- Soft-budget `STOP`/`MINUTES` come from the **T8 dry run** (only numbers still to measure) — defined in full
+  in the "T8 — the dry run" section above. Blocked on the first live harvest (needs a non-empty queue).
 - `_Control` lock is **best-effort** (Sheets has no atomic compare-and-swap) — acceptable because a single
   daily fire is the only scheduled writer and manual fires are discouraged while a run is active.

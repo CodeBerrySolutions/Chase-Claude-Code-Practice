@@ -1,6 +1,24 @@
 # Phase 0 Harvest — finalized spec (Berry Nova prospect harvester)
 _Finalized 2026-08-24 with reasonable defaults. Companion to `scoring-handoff.md` + `references/fetch-gate.md`._
 
+## Build status — BUILT & VALIDATED 2026-08-24 (INACTIVE, not yet run live)
+Workflow **`BN Prospect Harvest`** = `Nqh8rW55QoLIsDhd` (BerryNova project), 15 functional nodes + 2 stickies,
+SDK-validated. Topology as designed: Weekly Harvest → Read Existing Rows → Seeds → List Posts → Tag Posts →
+Flatten Posts (cap 8, skip reels) → List Comments → Tag Comments → Classify+Dedupe Commenters (dedup within
+run + drop rows already in the sheet by username, cap 150/post, tags `source_type`) → Cap Profile Calls
+(Limit 300) → Profile Enrich → Build Prospect Row → **Firecrawl Fetch** (error branch on) → **Fetch Gate**
+(both branches; `classifyFetch`/`statusFor` pasted **byte-identical** to `pipeline/fetch_gate.mjs`, 11/11
+self-test green) → **Write Prospect Row** (`append`, autoMap on the real Work Sheet, insert-if-absent via the
+upstream dedup). Credentials bound: Sheets `ewwwXdsL265lcGnq`, ScrapeCreators header `oB8NBmiRktRjoNwk`,
+Firecrawl `SWCB5NyKsCIYJAJM`.
+
+**Before the FIRST live run (spends credits — pause for Phil), confirm on the first call and adjust the one
+field each:** (1) profile numeric id field is `pk` (fallback `id`); (2) posts/comments are **single-page**
+here — `next_max_id`/`cursor` pagination is a deferred TODO; (3) the comments endpoint param is sent as `url`
+(post URL) — confirm vs `shortcode`/`post_id`. The two stickies on the canvas carry these same flags. The
+Firecrawl credential is in Phil's personal project — if activation errors with a project mismatch, reconnect
+it in the BerryNova project via the UI (same fix used for the Sheets cred).
+
 Goal: fill the **work sheet** the scorer drains — one row per candidate, born at an initial `status`, with the
 stable key and the two scoring inputs (bio + fetched page). Hands-off, weekly, feeding the fetch-gate → scorer.
 

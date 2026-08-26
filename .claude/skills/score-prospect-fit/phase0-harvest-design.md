@@ -26,8 +26,13 @@ run + drop rows already in the sheet by username, cap 150/post, tags `source_typ
    now reads row+fetch from its own `$json`. Firecrawl runs `continueRegularOutput` (single output, order kept).
 2. **Firecrawl default scrape:** the custom `scrapeOptions.formats` caused `Bad request`; removed — the node's
    default markdown scrape works.
-3. **Rate limit:** a burst of ~73 concurrent fetches hit "too many requests". Throttled to **batchSize 1,
-   batchInterval 1000ms, retryOnFail 3× (2.5s)**.
+3. **Rate limit:** a burst of concurrent fetches hit "too many requests". Throttling to 1/sec still failed
+   because the 3× retries tripled the request volume. **Final fix: `batchSize 1, batchInterval 7000ms
+   (~8.5/min), retryOnFail OFF`** — clears the Firecrawl rate limit (confirm actual plan limit; 8/min is a
+   safe free-tier assumption, raise if the plan allows). At this rate a full ~100-row harvest takes ~12 min.
+   Deep-fetch recovery lives in the companion **`BN Refetch Deep-Fetch Queue`** (`LwY4qE8GuZhv0RzC`,
+   `pipeline/refetch_workflow.ts`): reads `needs_deep_fetch` rows, re-runs Firecrawl (same throttle), re-gates,
+   and updates in place by `row_key` — re-runnable and idempotent, spends only Firecrawl (0 ScrapeCreators).
 4. **Google Sheets 50k-char cell cap:** two pages produced >50k-char markdown → the whole append 400'd (0 rows
    written). Fetch Gate now truncates `fetched_content` to **45000** chars (classification still runs on the
    full markdown).

@@ -59,14 +59,11 @@ const firecrawl = node({
     name: 'Firecrawl Re-fetch',
     position: [700, 300],
     onError: 'continueRegularOutput',
-    retryOnFail: true,
-    maxTries: 3,
-    waitBetweenTries: 2500,
     parameters: {
       resource: 'Scraping',
       operation: 'scrape',
       url: expr('{{ $json.ext_urls }}'),
-      requestOptions: { batching: { batch: { batchSize: 1, batchInterval: 1000 } } }
+      requestOptions: { batching: { batch: { batchSize: 1, batchInterval: 7000 } } }
     },
     credentials: { firecrawlApi: newCredential('Firecrawl BerryNova', 'SWCB5NyKsCIYJAJM') }
   },

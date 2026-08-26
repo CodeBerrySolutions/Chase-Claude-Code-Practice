@@ -148,9 +148,20 @@ sessions inherit them.
 queue posts a `scored 0 …` digest to `#fd_marketing` every day — the exact spam to avoid). Enable at **T9
 cutover**, alongside activating the harvest + watchdog.
 
+**Prerequisite — the helper workflows must be ACTIVE.** The runner calls queue-reader/verdict-writer via
+`execute_workflow` in **production mode** (manual mode pins an empty webhook body → the writer would receive
+`writes:[]` and silently write nothing). Production execution requires a **published/active** version, so at
+cutover **publish both** `queue-reader` (`G9vzcreuIpY1W7kn`) and `verdict-writer` (`80Vgb0oBZyZeYcrj`) — else the
+runner aborts with *"no active version to execute."* (They are intentionally left inactive while staged.)
+
+**Timezone — resolved.** Pilot/harvest timestamps carry a **+08:00** offset, so the spec's `0 8 * * *` (08:00
+UTC) = **16:00 local** = Phil's workday, competing with his own plan-token windows. Use **`0 19 * * *`** (03:00
+local, genuinely off-hours, still well after the Mon 06:00 UTC harvest). Re-derive only if his tz isn't +08:00.
+
 **Setup recipe (Routines UI):** new Routine → *fresh session each fire* in this repo's environment
-(`env_01Mq6tVbms9n8BgJx9UGdzdy`) → cron `0 8 * * *` (adjust hour per the tz check above) → attach the **n8n**,
-**Slack**, and **Google Drive** connectors → paste the prompt below verbatim → **leave disabled** until cutover.
+(`env_01Mq6tVbms9n8BgJx9UGdzdy`) → cron **`0 19 * * *`** (see tz note) → attach the **n8n**, **Slack**, and
+**Google Drive** connectors → model **Opus** (Sonnet = cheaper plan-token fallback) → paste the prompt below
+verbatim → **leave disabled** until cutover.
 
 ## The filled-in runner prompt (paste verbatim into the Routine)
 > You are the **Berry Nova prospect-scoring runner**. This is a fresh, unattended session. Score fetched

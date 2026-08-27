@@ -1,0 +1,40 @@
+{
+  "id": "G9vzcreuIpY1W7kn",
+  "name": "BN — Queue Reader (test)",
+  "active": false,
+  "versionId": "6a38b2d4-f885-42a1-93b6-c8fd3756ee74",
+  "settings": { "executionOrder": "v1", "availableInMCP": true },
+  "connections": {
+    "Receive Query": { "main": [[{ "node": "Read Queue", "type": "main", "index": 0 }]] },
+    "Read Queue": { "main": [[{ "node": "Filter By Status", "type": "main", "index": 0 }]] }
+  },
+  "nodes": [
+    {
+      "id": "edfa6628-8f69-47fc-bb0f-71be28920f26",
+      "name": "Receive Query",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [0, 0],
+      "parameters": { "httpMethod": "POST", "path": "bn-queue-reader", "responseMode": "lastNode", "responseData": "allEntries" },
+      "webhookId": "bab85440-88bb-4213-8d8c-f22eda74bf45"
+    },
+    {
+      "id": "f72aac39-0a88-42bb-83fc-7bbf3d78c397",
+      "name": "Read Queue",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [224, 0],
+      "parameters": { "resource": "sheet", "operation": "read", "authentication": "oAuth2", "documentId": { "__rl": true, "cachedResultName": "Berry Nova — Prospect Work Sheet", "mode": "id", "value": "1gZu5OuMhZ4kBfCPGNlsj09d07dtvkVsfQ2yk8u5252o" }, "sheetName": { "__rl": true, "mode": "name", "value": "Untitled" }, "options": {} },
+      "credentials": { "googleSheetsOAuth2Api": { "id": "ewwwXdsL265lcGnq", "name": "Google Sheets account" } }
+    },
+    {
+      "id": "b171c9de-2f78-448c-8777-fe8b2fe9f555",
+      "name": "Filter By Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [448, 0],
+      "parameters": { "mode": "runOnceForAllItems", "language": "javaScript", "jsCode": "const q = $('Receive Query').first().json;\nconst body = (q && q.body) ? q.body : q;\nconst statuses = (body && Array.isArray(body.statuses) && body.statuses.length) ? body.statuses : ['to_score', 'scoring'];\nconst want = {};\nfor (const s of statuses) { want[s] = true; }\nconst out = [];\nfor (const it of $input.all()) { if (want[String((it.json && it.json.status) || '')]) { out.push({ json: it.json }); } }\nreturn out;" }
+    }
+  ],
+  "_note": "Backup 2026-08-27. Webhook path bn-queue-reader. Sheet documentId = OLD sheet (pre-migration). Cred googleSheetsOAuth2Api ewwwXdsL265lcGnq (aiberrynova@gmail.com)."
+}

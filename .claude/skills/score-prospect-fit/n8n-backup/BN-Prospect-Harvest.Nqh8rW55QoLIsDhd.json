@@ -1,0 +1,27 @@
+{
+  "id": "Nqh8rW55QoLIsDhd",
+  "name": "BN Prospect Harvest",
+  "active": false,
+  "versionId": "31bca3a7-e314-4ebf-aba8-f511f7a1d2b9",
+  "settings": { "executionOrder": "v1", "availableInMCP": true },
+  "connections": {
+    "Weekly Harvest": { "main": [[{ "node": "Read Existing Rows", "type": "main", "index": 0 }]] },
+    "Read Existing Rows": { "main": [[{ "node": "Seeds", "type": "main", "index": 0 }]] },
+    "Seeds": { "main": [[{ "node": "List Posts", "type": "main", "index": 0 }]] },
+    "List Posts": { "main": [[{ "node": "Tag Posts With Seed", "type": "main", "index": 0 }]] },
+    "Tag Posts With Seed": { "main": [[{ "node": "Flatten Posts", "type": "main", "index": 0 }]] },
+    "Flatten Posts": { "main": [[{ "node": "List Comments", "type": "main", "index": 0 }]] },
+    "List Comments": { "main": [[{ "node": "Tag Comments With Post", "type": "main", "index": 0 }]] },
+    "Tag Comments With Post": { "main": [[{ "node": "Classify + Dedupe Commenters", "type": "main", "index": 0 }]] },
+    "Classify + Dedupe Commenters": { "main": [[{ "node": "Cap Profile Calls", "type": "main", "index": 0 }]] },
+    "Cap Profile Calls": { "main": [[{ "node": "Profile Enrich", "type": "main", "index": 0 }]] },
+    "Profile Enrich": { "main": [[{ "node": "Build Prospect Row", "type": "main", "index": 0 }]] },
+    "Build Prospect Row": { "main": [[{ "node": "Firecrawl Fetch", "type": "main", "index": 0 }, { "node": "Join Row + Fetch", "type": "main", "index": 0 }]] },
+    "Fetch Gate": { "main": [[{ "node": "Write Prospect Row", "type": "main", "index": 0 }]] },
+    "Firecrawl Fetch": { "main": [[{ "node": "Join Row + Fetch", "type": "main", "index": 1 }]] },
+    "Join Row + Fetch": { "main": [[{ "node": "Fetch Gate", "type": "main", "index": 0 }]] }
+  },
+  "_note": "Backup 2026-08-27. Full node parameters (code bodies, Firecrawl/ScrapeCreators config, fetch gate) are the canonical source in pipeline/harvest_workflow.ts + fetch_gate.mjs in this same skill. Sheet documentId here = OLD sheet 1gZu5OuMhZ4kBfCPGNlsj09d07dtvkVsfQ2yk8u5252o (pre-folder-migration). Credentials referenced by id: googleSheetsOAuth2Api ewwwXdsL265lcGnq (aiberrynova@gmail.com), httpHeaderAuth eBYpneBljMZRIPYQ (ScrapeCreators), firecrawlApi SWCB5NyKsCIYJAJM.",
+  "nodeCount": 18,
+  "schedule": "Weekly Harvest = weekly, Monday 06:00 (instance tz)"
+}

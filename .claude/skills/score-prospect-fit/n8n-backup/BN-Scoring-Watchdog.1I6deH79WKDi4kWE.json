@@ -1,0 +1,51 @@
+{
+  "id": "1I6deH79WKDi4kWE",
+  "name": "BN — Scoring Watchdog",
+  "active": false,
+  "versionId": "f97af60c-401f-4145-84bb-6a175903f639",
+  "settings": { "executionOrder": "v1", "availableInMCP": true },
+  "connections": {
+    "Daily Watchdog": { "main": [[{ "node": "Read Work Sheet", "type": "main", "index": 0 }]] },
+    "Read Work Sheet": { "main": [[{ "node": "Compute Alerts", "type": "main", "index": 0 }]] },
+    "Compute Alerts": { "main": [[{ "node": "Notify Watchdog", "type": "main", "index": 0 }]] }
+  },
+  "nodes": [
+    {
+      "id": "73708d40-c705-4f22-a9b1-055a8113aedf",
+      "name": "Daily Watchdog",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [0, 0],
+      "parameters": { "rule": { "interval": [{ "field": "cronExpression", "expression": "0 12 * * *" }] } }
+    },
+    {
+      "id": "fc620bfa-47f9-447e-baf7-78b25a68efe8",
+      "name": "Read Work Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [224, 0],
+      "parameters": { "resource": "sheet", "operation": "read", "authentication": "oAuth2", "documentId": { "__rl": true, "cachedResultName": "Berry Nova — Prospect Work Sheet", "mode": "id", "value": "1gZu5OuMhZ4kBfCPGNlsj09d07dtvkVsfQ2yk8u5252o" }, "sheetName": { "__rl": true, "mode": "name", "value": "Untitled" }, "options": {} },
+      "credentials": { "googleSheetsOAuth2Api": { "id": "ewwwXdsL265lcGnq", "name": "Google Sheets account" } }
+    },
+    {
+      "id": "4821cdf4-b4f1-4c7f-b285-ab57d3181011",
+      "name": "Compute Alerts",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [448, 0],
+      "parameters": { "mode": "runOnceForAllItems", "language": "javaScript", "jsCode": "const rows = $input.all().map(function (i) { return i.json; });\nconst now = Date.now();\nconst HR = 3600000;\nfunction ms(t) { const d = Date.parse(t); return isNaN(d) ? 0 : d; }\nconst toScore = rows.filter(function (r) { return r.status === 'to_score'; });\nconst scoring = rows.filter(function (r) { return r.status === 'scoring'; });\nconst deep = rows.filter(function (r) { return r.status === 'needs_deep_fetch'; });\nconst errs = rows.filter(function (r) { return r.status === 'error_held'; });\nlet lastScored = 0;\nrows.forEach(function (r) { if (r.status === 'scored') { const t = ms(r.screened_at); if (t > lastScored) lastScored = t; } });\nconst alerts = [];\nif (toScore.length > 0 && (lastScored === 0 || (now - lastScored) > 26 * HR)) { alerts.push('\\u2022 *Scorer may not have run*: ' + toScore.length + ' row(s) waiting in to_score; last verdict ' + (lastScored ? new Date(lastScored).toISOString() : 'never') + '.'); }\nconst stuck = scoring.filter(function (r) { const t = ms(r.claim_at); return t && (now - t) > HR; });\nif (stuck.length > 0) { alerts.push('\\u2022 *Stuck scoring*: ' + stuck.length + ' row(s) held >60m (dead lease) \\u2014 reclaim next run.'); }\nlet oldestDeep = 0;\ndeep.forEach(function (r) { const t = ms(r.fetched_at); if (t && (oldestDeep === 0 || t < oldestDeep)) oldestDeep = t; });\nif (deep.length > 0 && oldestDeep && (now - oldestDeep) > 7 * 24 * HR) { alerts.push('\\u2022 *Deep-Fetch Queue aging*: ' + deep.length + ' row(s), oldest ' + Math.floor((now - oldestDeep) / (24 * HR)) + 'd \\u2014 needs the 9222 pass.'); }\nif (errs.length > 0) { alerts.push('\\u2022 *Error-held*: ' + errs.length + ' row(s) need a look.'); }\nif (alerts.length === 0) return [];\nconst msg = '\\uD83D\\uDEA8 *SCORING WATCHDOG* ' + new Date().toISOString().slice(0, 10) + '\\n' + alerts.join('\\n');\nreturn [{ json: { alert: msg, alert_count: alerts.length } }];" }
+    },
+    {
+      "id": "0655501f-59c4-4afd-9cf6-92f81e2c0259",
+      "name": "Notify Watchdog",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [672, 0],
+      "parameters": { "resource": "message", "operation": "post", "authentication": "accessToken", "select": "channel", "channelId": { "__rl": true, "mode": "id", "value": "C0BR9JW9Z6F", "cachedResultName": "fd_marketing" }, "messageType": "text", "text": "={{ $json.alert }}" },
+      "webhookId": "85fdb6ed-a63b-412a-a1e5-86738d0dc884",
+      "disabled": true,
+      "credentials": { "slackApi": { "id": "kHGFK2xQZL4ZgDt6", "name": "Slack BerryNova" } }
+    }
+  ],
+  "_note": "Backup 2026-08-27. T6 watchdog: daily 12:00 UTC, reads Work Sheet, computes stale-queue/stuck-lease/aging-deep-fetch/error-held alerts, posts to #fd_marketing (C0BR9JW9Z6F). Notify node currently DISABLED and workflow INACTIVE (staged). Sheet documentId = OLD sheet (pre-migration). Creds: googleSheetsOAuth2Api ewwwXdsL265lcGnq, slackApi kHGFK2xQZL4ZgDt6."
+}

@@ -1,0 +1,40 @@
+{
+  "id": "80Vgb0oBZyZeYcrj",
+  "name": "BN — Verdict Writer (test)",
+  "active": false,
+  "versionId": "24ea7b6e-db6c-4fb9-9803-ecc23604bf0f",
+  "settings": { "executionOrder": "v1", "availableInMCP": true },
+  "connections": {
+    "Receive Writes": { "main": [[{ "node": "Expand Writes", "type": "main", "index": 0 }]] },
+    "Expand Writes": { "main": [[{ "node": "Upsert Row", "type": "main", "index": 0 }]] }
+  },
+  "nodes": [
+    {
+      "id": "0358591f-5a74-48e2-8841-92f6e025ea6c",
+      "name": "Receive Writes",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [0, 0],
+      "parameters": { "httpMethod": "POST", "path": "bn-verdict-writer", "responseMode": "lastNode", "responseData": "allEntries" },
+      "webhookId": "248510bd-1703-4249-964c-7d403b221634"
+    },
+    {
+      "id": "bec9d941-cd6f-487a-835a-14a1ba9dd81f",
+      "name": "Expand Writes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [224, 0],
+      "parameters": { "mode": "runOnceForAllItems", "language": "javaScript", "jsCode": "const input = $input.first();\nconst b = input ? input.json : {};\nconst writes = (b && b.body && b.body.writes) ? b.body.writes : ((b && b.writes) ? b.writes : []);\nreturn writes.map(function (w) { return { json: w }; });" }
+    },
+    {
+      "id": "043b497a-bd8a-4e81-9805-3c8d9fda5521",
+      "name": "Upsert Row",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [448, 0],
+      "parameters": { "resource": "sheet", "operation": "appendOrUpdate", "authentication": "oAuth2", "documentId": { "__rl": true, "cachedResultName": "Berry Nova — Prospect Work Sheet", "mode": "id", "value": "1gZu5OuMhZ4kBfCPGNlsj09d07dtvkVsfQ2yk8u5252o" }, "sheetName": { "__rl": true, "mode": "name", "value": "Untitled" }, "columns": { "mappingMode": "autoMapInputData", "value": {}, "matchingColumns": ["row_key"], "schema": [{ "id": "row_key", "displayName": "row_key", "required": false, "display": true, "type": "string", "canBeUsedToMatch": true }] }, "options": { "handlingExtraData": "insertInNewColumn" } },
+      "credentials": { "googleSheetsOAuth2Api": { "id": "ewwwXdsL265lcGnq", "name": "Google Sheets account" } }
+    }
+  ],
+  "_note": "Backup 2026-08-27. Webhook path bn-verdict-writer. appendOrUpdate matching on row_key. Sheet documentId = OLD sheet (pre-migration). Cred googleSheetsOAuth2Api ewwwXdsL265lcGnq (aiberrynova@gmail.com)."
+}
